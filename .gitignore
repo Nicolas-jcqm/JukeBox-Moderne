@@ -1,0 +1,4 @@
+/jukebox-api/.idea
+/jukebox-api/vendor
+/jukebox-api/composer.lock
+/jukebox-api/src/conf/config.ini
