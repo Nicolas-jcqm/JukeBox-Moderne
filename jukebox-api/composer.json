@@ -9,10 +9,11 @@
 
 	"autoload":{
 		"psr-0":{
-			"jukebox-api" : "src",
-			"conf": "src"
+			"Controllers" : "src",
+			"conf": "src",
+			"Models":"src"
+
 		}
 	}
-
 
 }
