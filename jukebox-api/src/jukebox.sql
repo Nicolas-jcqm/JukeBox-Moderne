@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Client :  127.0.0.1
--- Généré le :  Lun 19 Février 2018 à 14:11
+-- Généré le :  Mar 20 Février 2018 à 13:31
 -- Version du serveur :  5.7.14
 -- Version de PHP :  7.0.10
 
@@ -33,6 +33,14 @@ CREATE TABLE `administrator` (
   `name` varchar(100) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- Contenu de la table `administrator`
+--
+
+INSERT INTO `administrator` (`mail`, `password`, `firstName`, `name`) VALUES
+('Nicolas@gmail.com', 'password1', 'Nicolas', 'Jacquemin'),
+('Artorias@AnorLondo.lt', 'abyssWalker', 'Artorias', 'Knight');
+
 -- --------------------------------------------------------
 
 --
@@ -43,6 +51,14 @@ CREATE TABLE `artist` (
   `idArtist` int(11) NOT NULL,
   `nameArtist` varchar(100) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `artist`
+--
+
+INSERT INTO `artist` (`idArtist`, `nameArtist`) VALUES
+(1, 'Linkin Park'),
+(2, 'Imagine Dragons');
 
 -- --------------------------------------------------------
 
@@ -57,6 +73,13 @@ CREATE TABLE `jukebox` (
   `administratorJukebox` varchar(100) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- Contenu de la table `jukebox`
+--
+
+INSERT INTO `jukebox` (`idJukebox`, `nameJukebox`, `tokenJukebox`, `administratorJukebox`) VALUES
+(1, 'JukeBox Cisiie', 'mynithluna', 'Nicolas@gmail.com');
+
 -- --------------------------------------------------------
 
 --
@@ -68,6 +91,13 @@ CREATE TABLE `kind` (
   `nameKind` varchar(100) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- Contenu de la table `kind`
+--
+
+INSERT INTO `kind` (`idKind`, `nameKind`) VALUES
+(1, 'Rock');
+
 -- --------------------------------------------------------
 
 --
@@ -77,22 +107,40 @@ CREATE TABLE `kind` (
 CREATE TABLE `playlist` (
   `idPlaylist` int(11) NOT NULL,
   `namePlaylist` varchar(100) NOT NULL,
-  `durationPlaylist` float NOT NULL,
+  `durationPlaylist` float DEFAULT NULL,
   `descriptionPlaylist` varchar(500) NOT NULL,
+  `isActivated` tinyint(1) NOT NULL,
   `idJukebox` int(11) NOT NULL,
   `idKind` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+--
+-- Contenu de la table `playlist`
+--
+
+INSERT INTO `playlist` (`idPlaylist`, `namePlaylist`, `durationPlaylist`, `descriptionPlaylist`, `isActivated`, `idJukebox`, `idKind`) VALUES
+(1, 'Playlist test', NULL, 'Playlist de test pour le jukebox 1', 1, 1, 1);
+
 -- --------------------------------------------------------
 
 --
--- Structure de la table `playlisttrack`
+-- Structure de la table `playlist_track`
 --
 
-CREATE TABLE `playlisttrack` (
+CREATE TABLE `playlist_track` (
   `idPlaylist` int(11) NOT NULL,
-  `idTrack` int(11) NOT NULL
+  `idTrack` int(11) NOT NULL,
+  `positionTrack` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `playlist_track`
+--
+
+INSERT INTO `playlist_track` (`idPlaylist`, `idTrack`, `positionTrack`) VALUES
+(1, 1, 1),
+(1, 2, 2),
+(1, 3, 3);
 
 -- --------------------------------------------------------
 
@@ -108,9 +156,19 @@ CREATE TABLE `track` (
   `scoreTrack` float NOT NULL,
   `yearTrack` int(4) NOT NULL,
   `pictureTrack` varchar(100) NOT NULL,
+  `urlTrack` varchar(100) NOT NULL,
   `idArtist` int(11) NOT NULL,
   `idKind` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `track`
+--
+
+INSERT INTO `track` (`idTrack`, `titleTrack`, `durationTrack`, `descriptionTrack`, `scoreTrack`, `yearTrack`, `pictureTrack`, `urlTrack`, `idArtist`, `idKind`) VALUES
+(3, 'In the End', 3.37, 'NULL', 0, 2000, 'NULL', 'NULL', 1, 1),
+(1, 'Numb', 3.06, 'NULL', 0, 2003, 'NULL', 'NULL', 1, 1),
+(4, 'Warriors', 2.5, 'Musique LOL mondial 2014', 0, 2014, 'NULL', 'NULL', 2, 1);
 
 --
 -- Index pour les tables exportées
@@ -150,9 +208,9 @@ ALTER TABLE `playlist`
   ADD KEY `playlist_ctrtKind` (`idKind`);
 
 --
--- Index pour la table `playlisttrack`
+-- Index pour la table `playlist_track`
 --
-ALTER TABLE `playlisttrack`
+ALTER TABLE `playlist_track`
   ADD KEY `playlisttrack_ctrtPlaylist` (`idPlaylist`),
   ADD KEY `playlisttrack_ctrtTrack` (`idTrack`);
 
@@ -172,27 +230,27 @@ ALTER TABLE `track`
 -- AUTO_INCREMENT pour la table `artist`
 --
 ALTER TABLE `artist`
-  MODIFY `idArtist` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idArtist` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT pour la table `jukebox`
 --
 ALTER TABLE `jukebox`
-  MODIFY `idJukebox` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idJukebox` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT pour la table `kind`
 --
 ALTER TABLE `kind`
-  MODIFY `idKind` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idKind` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT pour la table `playlist`
 --
 ALTER TABLE `playlist`
-  MODIFY `idPlaylist` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idPlaylist` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT pour la table `track`
 --
 ALTER TABLE `track`
-  MODIFY `idTrack` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idTrack` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

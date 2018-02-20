@@ -17,4 +17,12 @@ class Jukebox extends Model {
     protected $primaryKey = 'idJukebox';
     public $timestamps = false;
 
+    public function playlists(){
+        return $this->hasMany("Models\Playlist", 'idJukebox');
+    }
+
+    public function administrator(){
+        return $this->hasOne('Models\Administrator', 'administratorJukebox');
+    }
+
 }
