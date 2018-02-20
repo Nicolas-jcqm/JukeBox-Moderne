@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Nicolas
@@ -16,5 +17,9 @@ class Artist extends Model{
     protected $table = 'artist';
     protected $primaryKey = 'idArtist';
     public $timestamps = false;
+
+    public function tracks(){
+        return $this->hasMany("Models\Track", 'idArtist');
+    }
 
 }

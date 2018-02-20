@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Nicolas
@@ -6,10 +7,8 @@
  * Time: 13:29
  */
 
-session_start();
 include_once 'vendor/autoload.php';
 
-use Illuminate\Database\Capsule\Manager;
 use Controllers\JukeboxController;
 use conf\Eloquent;
 
@@ -19,10 +18,20 @@ Eloquent::init('src/conf/config.ini');
 
 $app = new \Slim\slim();
 
-// Retourne la liste des musiques pour le Jukebox 1
-$app->get('/jukebox/1',function() use ($app){
-    $control = new JukeboxController();
-    echo $control->affichh();
+$app->get('/jukebox/:tokenJukebox',function($tokenJukeBox) use ($app){
+    $jc = new JukeboxController();
+    echo $jc->returnJukeBox($tokenJukeBox);
+})->name('jukebox');
+
+$app->get('/jukebox/:tokenJukebox/playlists',function($tokenJukeBox) use ($app){
+    $jc = new JukeboxController();
+    echo $jc->returnPlaylists($tokenJukeBox);
+})->name('jukeboxPlaylists');
+
+$app->get('/jukebox/:tokenJukebox/playlist/tracks',function($tokenJukeBox) use ($app){
+    $jc = new JukeboxController();
+    $listTracks = $jc->returnTracks($tokenJukeBox);
+    foreach ($listTracks->tracks as $t) { echo $t; }
 })->name('jukebox');
 
 $app->run();

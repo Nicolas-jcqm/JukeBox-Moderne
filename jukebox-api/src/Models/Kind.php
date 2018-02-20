@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Nicolas
@@ -16,5 +17,13 @@ class Kind extends Model{
     protected $table = 'kind';
     protected $primaryKey = 'idKind';
     public $timestamps = false;
+
+    public function playlists(){
+        return $this->hasMany("Models\Playlist",'idKind');
+    }
+
+    public function tracks(){
+        return $this->hasMany("Models\Track", 'idKind');
+    }
 
 }

@@ -1,4 +1,5 @@
 {
+
 	"name" : "jukebox-api",
 	"type" : "project",
 	"require" :{

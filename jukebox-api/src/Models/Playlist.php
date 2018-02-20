@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Nicolas
@@ -16,5 +17,17 @@ class Playlist extends Model{
     protected $table = 'playlist';
     protected $primaryKey = 'idPlaylist';
     public $timestamps = false;
+
+    public function tracks(){
+        return $this->belongsToMany(\Models\Track::class, 'playlist_track', 'idPlaylist', 'idTrack');
+    }
+
+    public function jukebox(){
+        return $this->belongsTo('Models\Jukebox', 'idJukebox');
+    }
+
+    public function kind(){
+        return $this->belongsTo('Models\Kind', 'idKind');
+    }
 
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Nicolas
@@ -16,5 +17,9 @@ class Administrator extends Model {
     protected $table = 'administrator';
     protected $primaryKey = 'mail';
     public $timestamps = false;
+
+    public function jukebox(){
+        return $this->hasOne('\Models\Jukebox','administratorJukebox');
+    }
 
 }
