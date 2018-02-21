@@ -10,12 +10,16 @@
 namespace Controllers;
 
 use Models\Jukebox;
-use Models\Playlist;
 
 
 class JukeboxController {
 
-    public function __construct(){ }
+    private $pc;
+
+
+    public function __construct(){
+        $this->pc =  new PlaylistController();
+    }
 
     public function returnJukeBox($tokenJukeBox){
         return Jukebox::where('tokenJukebox','like',$tokenJukeBox)->first();
@@ -23,14 +27,12 @@ class JukeboxController {
 
     public function returnPlaylists($tokenJukebox){
         $idJuk = $this->returnJukeBox($tokenJukebox);
-        $pc = new PlaylistController();
-        return $pc->returnPlaylistsFromJukebox($idJuk->idJukebox);
+        return $this->pc->returnPlaylistsFromJukebox($idJuk->idJukebox);
     }
 
     public function returnTracks($tokenJukeBox){
         $idJuk = $this->returnJukeBox($tokenJukeBox);
-        $pc = new PlaylistController();
-        return $pc->returnActivePlaylist($idJuk->idJukebox);
+        return $this->pc->returnActivePlaylist($idJuk->idJukebox);
     }
 
 }
