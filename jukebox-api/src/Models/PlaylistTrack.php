@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Nicolas
@@ -10,7 +11,7 @@ namespace Models;
 
 use \Illuminate\Database\Eloquent\Model;
 
-class playlist_track extends Model{
+class PlaylistTrack extends Model{
 
     protected $table = 'playlist_track';
     protected $primaryKey = ['idPlaylist','idTrack'];
