@@ -6,14 +6,11 @@
     <link rel="stylesheet" href="style.css">
     <title>JukeBox Moderne</title>
   </head>
-  <body style="background: silver">
+  <body>
     
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top navbar">
-      <a class="navbar-brand" href="#">JukeBox - Le player de Monsieur </a>
-      <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    </nav>
+    <div class="jumbotron">
+      <h1>JukeBox</h1>
+    </div>
 
     <div class="container">
       <div class="row">
@@ -21,18 +18,17 @@
           <h2>Prochaine musique :</h2>
           <ul class="list-group"></ul>
         </div>
-        <div id="right" class="col">
-          
+        <div id="right" class="col divPlayer">
           <div class="titlePlayer">
             <div class="divImg">
-              <img id="imgPlayer" src="images/joris.jpg">
+              <img id="imgPlayer">
             </div>
-          <h4 class="text-center" style="margin-top: 3%;">Joris Delacroix - Air France</h4>
+            <h4 class="infos text-center"></h4>
+          </div>
+          <div class="player text-center"></div>
         </div>
-        <div class="player text-center"></div>
       </div>
     </div>
-  </div>
     <script>
       // You can also require other files to run in this process
       require('./renderer.js');
@@ -40,11 +36,12 @@
 
     <script type="text/javascript">
     function play(audio, callback) {
+      $("#imgPlayer").attr("src",audio.Picture);
       $(".player").empty();
       $(".infos").text($(".list-group-item:first-child .row .text-left").text());
       $(".list-group-item:first-child").remove();
       $(".player").append('<audio id="player2" preload="none" controls style="max-width: 100%">');
-      $("#player2").append('<source src="'+audio+'" type="audio/mp3">');
+      $("#player2").append('<source src="'+audio.Url+'" type="audio/mp3">');
       $(".player").append('</audio>');
       document.getElementById("player2").play()
       //audio.play();
@@ -86,7 +83,7 @@
             $.getJSON('http://s07-gestion-appel-offre.zenserv.fr/index.php/jukebox/mynithluna/playlist/tracks', function(json_data){
               for (var i = json_data.length - 1; i >= 0; i--) {
                 //document.getElementById("leftdiv").append(json_data[i].Title);
-                tab.push(json_data[i].Url);
+                tab.push(json_data[i]);
                 $(".list-group").append('<li class="list-group-item"><div class="row"><div class="col text-left">'+json_data[i].Title+' - '+json_data[i].Artist+'</div><div class="col text-right">'+json_data[i].Duration+'</div></div></li>');
               }
               play_sound_queue(tab);
