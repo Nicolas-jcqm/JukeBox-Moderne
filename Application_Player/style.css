@@ -1,15 +1,16 @@
 html{
 	height: 100%;
 }
-.navbar{
+.jumbotron{
 	background-color: #00B2FA;
+	padding: 2em 1.5em;
 }
 .divPlayer{
 
 	display: flex;
 	flex-direction: column;
 
-	height: 90vh;
+	min-height: 79vh;
 	background-size: contain;
 	background-image: url(images/backgroundPlayer.PNG);
 	background-repeat: no-repeat;
@@ -25,7 +26,6 @@ html{
 }
 .divImg{
 	box-shadow: 0 10px 20px -15px rgba(0, 0, 0, .35), 0 22px 40px -15px rgba(0, 0, 0, .20);
-	margin-top: 10%;
 	margin-left: auto;
 	margin-right: auto;
 	width: 25vw; 
