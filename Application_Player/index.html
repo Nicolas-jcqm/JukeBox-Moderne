@@ -3,11 +3,10 @@
   <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-        <link rel="stylesheet" href="style.css">
-
-    <title>Hello World!</title>
+    <link rel="stylesheet" href="style.css">
+    <title>JukeBox Moderne</title>
   </head>
-  <body>
+  <body style="background: silver">
     
     <nav class="navbar navbar-expand-md navbar-dark fixed-top navbar">
       <a class="navbar-brand" href="#">JukeBox - Le player de Monsieur </a>
@@ -15,37 +14,84 @@
         <span class="navbar-toggler-icon"></span>
       </button>
     </nav>
-  
 
-<div class="container" style="margin-top: 5%;">
-  <div class="row">
-    <div class="col-7">
-      1 of 2
-    </div>
-    <div class="col-5 divPlayer">
-      <div class="titlePlayer">
-        <div class="divImg">
-          <img id="imgPlayer" src="images/joris.jpg">
+    <div class="container">
+      <div class="row">
+        <div id="left" class="col" style="min-height: 60%">
+          <h2>Prochaine musique :</h2>
+          <ul class="list-group"></ul>
         </div>
-        <h4 class="text-center" style="margin-top: 3%;">Joris Delacroix - Air France</h1>
-      </div>
-      <div class="player">
-        <audio id="player2" preload="none" controls style="max-width: 100%; background-color: black;">
-          <source src="../../../Music/MusiqueNathan/JorisDelacroix/RoomWithView/AirFrance.mp3" type="audio/mp3">
-        </audio>  
+        <div id="right" class="col">
+          
+          <div class="titlePlayer">
+            <div class="divImg">
+              <img id="imgPlayer" src="images/joris.jpg">
+            </div>
+          <h4 class="text-center" style="margin-top: 3%;">Joris Delacroix - Air France</h4>
+        </div>
+        <div class="player text-center"></div>
       </div>
     </div>
   </div>
-</div>
-
- 
-  
-    
     <script>
       // You can also require other files to run in this process
       require('./renderer.js');
     </script>
 
+    <script type="text/javascript">
+    function play(audio, callback) {
+      $(".player").empty();
+      $(".infos").text($(".list-group-item:first-child .row .text-left").text());
+      $(".list-group-item:first-child").remove();
+      $(".player").append('<audio id="player2" preload="none" controls style="max-width: 100%">');
+      $("#player2").append('<source src="'+audio+'" type="audio/mp3">');
+      $(".player").append('</audio>');
+      document.getElementById("player2").play()
+      //audio.play();
+      if (callback) {
+        //When the audio object completes it's playback, call the callback
+        //provided
+        document.getElementById("player2").addEventListener('ended', callback);
+      }
+    }
 
+    //Changed the name to better reflect the functionality
+    function play_sound_queue(sounds) {
+      var index = 0;
+      function recursive_play() {
+        //If the index is the last of the table, play the sound
+        //without running a callback after       
+        if (index + 1 === sounds.length) {
+          play(sounds[index], null);
+        } else {
+          //Else, play the sound, and when the playing is complete
+          //increment index by one and play the sound in the 
+          //indexth position of the array
+          play(sounds[index], function() {
+            index++;
+            recursive_play();
+          });
+        }
+      }
+
+      //Call the recursive_play for the first time
+      recursive_play();
+    }
+
+      $(document).ready(function(){
+          $.getJSON('http://s07-gestion-appel-offre.zenserv.fr/index.php/jukebox/mynithluna', function(json_data){
+              $('h1').text(json_data.nameJukebox);
+          });
+            var tab= new Array();
+            $.getJSON('http://s07-gestion-appel-offre.zenserv.fr/index.php/jukebox/mynithluna/playlist/tracks', function(json_data){
+              for (var i = json_data.length - 1; i >= 0; i--) {
+                //document.getElementById("leftdiv").append(json_data[i].Title);
+                tab.push(json_data[i].Url);
+                $(".list-group").append('<li class="list-group-item"><div class="row"><div class="col text-left">'+json_data[i].Title+' - '+json_data[i].Artist+'</div><div class="col text-right">'+json_data[i].Duration+'</div></div></li>');
+              }
+              play_sound_queue(tab);
+        });
+      });
+    </script>
   </body>
 </html>
