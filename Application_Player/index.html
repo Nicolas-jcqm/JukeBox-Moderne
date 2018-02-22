@@ -3,71 +3,82 @@
   <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <title>Hello World!</title>
   </head>
-  <body>
-    <header>
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-      <a class="navbar-brand" href="#">Dashboard</a>
-      <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Settings</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Profile</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Help</a>
-          </li>
-        </ul>
-        <form class="form-inline mt-2 mt-md-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
+  <body style="background: silver">
+    <div class="jumbotron" style="padding: 1em 1.5em;">
+      <h1>Jukebox Moderne</h1>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div id="left" class="col" style="min-height: 60%">
+          <h2>Prochaine musique :</h2>
+          <ul class="list-group"></ul>
+        </div>
+        <div id="right" class="col">
+          <div class="infos text-center"></div>
+          <div class="player text-center"></div>
+        </div>
       </div>
-    </nav>
-  </header>
-  <div>
-    <audio id="player2" preload="none" controls style="max-width: 100%">
-      <source src="https://www.youtube.com/watch?v=DnGdoEa1tPg&list=PLbdNRCX9PpV9-XPO8l820kEKnhgmTH1MN" type="audio/mp3">
-  </audio>  
-  </div>
-  
-  <div class="starter-template">
-        <ul class="nav nav-pills flex-column">
-          <li class="nav-item">
-            <a class="nav-link" href="#">Nav item</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Nav item again</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">One more nav</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Another nav item</a>
-          </li>
-        </ul>
-  </div>
-    
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
-
+    </div>
     <script>
       // You can also require other files to run in this process
       require('./renderer.js');
     </script>
 
+    <script type="text/javascript">
+    function play(audio, callback) {
+      $(".player").empty();
+      $(".infos").text($(".list-group-item:first-child .row .text-left").text());
+      $(".list-group-item:first-child").remove();
+      $(".player").append('<audio id="player2" preload="none" controls style="max-width: 100%">');
+      $("#player2").append('<source src="'+audio+'" type="audio/mp3">');
+      $(".player").append('</audio>');
+      document.getElementById("player2").play()
+      //audio.play();
+      if (callback) {
+        //When the audio object completes it's playback, call the callback
+        //provided
+        document.getElementById("player2").addEventListener('ended', callback);
+      }
+    }
 
+    //Changed the name to better reflect the functionality
+    function play_sound_queue(sounds) {
+      var index = 0;
+      function recursive_play() {
+        //If the index is the last of the table, play the sound
+        //without running a callback after       
+        if (index + 1 === sounds.length) {
+          play(sounds[index], null);
+        } else {
+          //Else, play the sound, and when the playing is complete
+          //increment index by one and play the sound in the 
+          //indexth position of the array
+          play(sounds[index], function() {
+            index++;
+            recursive_play();
+          });
+        }
+      }
+
+      //Call the recursive_play for the first time
+      recursive_play();
+    }
+
+      $(document).ready(function(){
+          $.getJSON('http://s07-gestion-appel-offre.zenserv.fr/index.php/jukebox/mynithluna', function(json_data){
+              $('h1').text(json_data.nameJukebox);
+          });
+            var tab= new Array();
+            $.getJSON('http://s07-gestion-appel-offre.zenserv.fr/index.php/jukebox/mynithluna/playlist/tracks', function(json_data){
+              for (var i = json_data.length - 1; i >= 0; i--) {
+                //document.getElementById("leftdiv").append(json_data[i].Title);
+                tab.push(json_data[i].Url);
+                $(".list-group").append('<li class="list-group-item"><div class="row"><div class="col text-left">'+json_data[i].Title+' - '+json_data[i].Artist+'</div><div class="col text-right">'+json_data[i].Duration+'</div></div></li>');
+              }
+              play_sound_queue(tab);
+        });
+      });
+    </script>
   </body>
 </html>
