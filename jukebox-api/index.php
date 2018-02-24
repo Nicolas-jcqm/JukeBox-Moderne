@@ -10,14 +10,21 @@
 include_once 'vendor/autoload.php';
 
 use Controllers\JukeboxController;
+use Controllers\AdminController;
 use Controllers\PlaylistController;
 use conf\Eloquent;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 
 \Slim\Slim::registerAutoloader();
 
 Eloquent::init('src/conf/config.ini');
 
 $app = new \Slim\slim();
+
+$app->get('/test',function() use ($app){
+    echo "Welcome to api home page";
+})->name('home');
 
 $app->get('/jukebox/:tokenJukebox',function($tokenJukeBox) use ($app){
     $jc = new JukeboxController();
@@ -48,5 +55,21 @@ $app->post('/jukebox/:tokenJukebox/playlist/tracks',function($tokenJukeBox) use 
     $listTracks = $jc->returnTracks($tokenJukeBox);
     foreach ($listTracks->tracks as $t) { echo $t; }
 })->name('tracksPlaylist');
+
+$app->post('/admin/signin',function() use ($app){
+    $ac = new AdminController();
+    return $ac->Signin();
+})->name('admin_signin');
+
+$app->post('/admin/signup',function() use ($app){
+    $ac = new AdminController();
+    return $ac->Signup();
+})->name('admin_signup');
+
+$app->get('/',function() use ($app){
+    $ac = new AdminController();
+    return $ac->disconnect();
+})->name('admin_disconnect');
+
 
 $app->run();
