@@ -20,6 +20,10 @@ class JukeboxController {
     public function __construct(){
         $this->pc =  new PlaylistController();
     }
+    
+    public function returnAll(){
+        return Jukebox::all();
+    }
 
     public function returnJukeBox($tokenJukeBox){
         return Jukebox::where('tokenJukebox','like',$tokenJukeBox)->first();
