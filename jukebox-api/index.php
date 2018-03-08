@@ -13,27 +13,38 @@ use Controllers\JukeboxController;
 use Controllers\PlaylistController;
 use conf\Eloquent;
 
-\Slim\Slim::registerAutoloader();
-
 Eloquent::init('src/conf/config.ini');
 
-$app = new \Slim\slim();
+$app = new Slim\App([
+    'settings' => [
+        'displayErrorDetails' => true
+    ]
+]);
 
-$app->get('/jukebox/:tokenJukebox',function($tokenJukeBox) use ($app){
+$app->get('/jukebox/{tokenJukebox}',function (Slim\Http\Request $req,  Slim\Http\Response $res, $args)  use ($app){
+    echo "<pre>";
     $jc = new JukeboxController();
-    echo $jc->returnJukeBox($tokenJukeBox);
-})->name('jukebox');
+    echo $jc->returnJukeBox($args['tokenJukebox']);
+});
 
-$app->get('/jukebox/:tokenJukebox/playlists',function($tokenJukeBox) use ($app){
+$app->get('/jukebox/:tokenJukebox/playlists',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $jc = new JukeboxController();
-    echo $jc->returnPlaylists($tokenJukeBox);
-})->name('jukeboxPlaylists');
+    echo $jc->returnPlaylists($args['tokenJukebox']);
+});
 
-$app->get('/jukebox/:tokenJukebox/playlist/tracks',function($tokenJukeBox) use ($app){
+$app->get('/jukebox/:tokenJukebox/playlist/tracks',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $jc = new JukeboxController();
-    echo $jc->returnTracks($tokenJukeBox);
-})->name('tracksPlaylist');
+    echo $jc->returnTracks($args['tokenJukebox']);
+});
+//Creation d'un jukebox
+$app->post('/jukebox', function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
 
+    $jc = new JukeboxController();
+    return $jc->addJukeBox($req, $res);
+
+
+});
+/*
 $app->post('/playlist/tracks',function() use ($app){
     if(isset($_POST['idPlaylist']) && isset($_POST['idTrack']) ){
         $pc = new PlaylistController();
@@ -47,6 +58,6 @@ $app->post('/jukebox/:tokenJukebox/playlist/tracks',function($tokenJukeBox) use 
     $jc = new JukeboxController();
     $listTracks = $jc->returnTracks($tokenJukeBox);
     foreach ($listTracks->tracks as $t) { echo $t; }
-})->name('tracksPlaylist');
+})->name('tracksPlaylist');*/
 
 $app->run();
