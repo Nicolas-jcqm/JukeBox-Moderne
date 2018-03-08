@@ -10,8 +10,11 @@
 include_once 'vendor/autoload.php';
 
 use Controllers\JukeboxController;
+use Controllers\AdminController;
 use Controllers\PlaylistController;
 use conf\Eloquent;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ResponseInterface as Response;
 
 Eloquent::init('src/conf/config.ini');
 
@@ -59,5 +62,21 @@ $app->post('/jukebox/:tokenJukebox/playlist/tracks',function($tokenJukeBox) use 
     $listTracks = $jc->returnTracks($tokenJukeBox);
     foreach ($listTracks->tracks as $t) { echo $t; }
 })->name('tracksPlaylist');*/
+
+$app->post('/admin/signin',function() use ($app){
+    $ac = new AdminController();
+    return $ac->Signin($app->request, $app->response);
+})->name('admin_signin');
+
+$app->post('/admin/signup',function() use ($app){
+    $ac = new AdminController();
+    return $ac->Signup($app->request, $app->response);
+})->name('admin_signup');
+
+$app->get('/admin/logout',function() use ($app){
+    $ac = new AdminController();
+    return $ac->disconnect();
+})->name('admin_disconnect');
+
 
 $app->run();

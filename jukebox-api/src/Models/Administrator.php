@@ -21,5 +21,4 @@ class Administrator extends Model {
     public function jukebox(){
         return $this->hasOne('\Models\Jukebox','administratorJukebox');
     }
-
 }

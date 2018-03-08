@@ -13,10 +13,18 @@ use Models\Jukebox;
 class JukeboxController {
 
     private $pc;
+	private $ac;
+	private $ak;
 
 
     public function __construct(){
         $this->pc =  new PlaylistController();
+		$this->ac = new ArtistController();
+		$this->ak = new KindController();
+    }
+    
+    public function returnAll(){
+        return Jukebox::all();
     }
 
     public function returnJukeBox($tokenJukeBox){
@@ -36,7 +44,7 @@ class JukeboxController {
     public function returnJsonTracks($listTracks){
         $res=array();
         foreach ($listTracks->tracks as $t) {
-            array_push($res, array("Title"=>$t->titleTrack, "Duration"=>$t->durationTrack, "Description"=>$t->descriptionTrack, "Score"=>$t->scoreTrack, "Year"=>$t->yearTrack, "Picture"=>$t->pictureTrack, "Url"=>$t->urlTrack, "Artist"=>"n", "Kind"=>"n"));
+            array_push($res, array("Title"=>$t->titleTrack, "Duration"=>$t->durationTrack, "Description"=>$t->descriptionTrack, "Score"=>$t->scoreTrack, "Year"=>$t->yearTrack, "Picture"=>$t->pictureTrack, "Url"=>$t->urlTrack, "Artist"=>$this->ac->returnNameArtist($t->idArtist), "Kind"=>$this->ak->returnNameKind($t->idKind) ));
         }
         return json_encode($res);
     }
