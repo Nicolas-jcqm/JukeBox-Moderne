@@ -58,15 +58,15 @@ $app->post('/jukebox/:tokenJukebox/playlist/tracks',function($tokenJukeBox) use 
 
 $app->post('/admin/signin',function() use ($app){
     $ac = new AdminController();
-    return $ac->Signin();
+    return $ac->Signin($app->request, $app->response);
 })->name('admin_signin');
 
 $app->post('/admin/signup',function() use ($app){
     $ac = new AdminController();
-    return $ac->Signup();
+    return $ac->Signup($app->request, $app->response);
 })->name('admin_signup');
 
-$app->get('/',function() use ($app){
+$app->get('/admin/logout',function() use ($app){
     $ac = new AdminController();
     return $ac->disconnect();
 })->name('admin_disconnect');
