@@ -12,9 +12,6 @@ final class AdminController
     }
 
     public function Signup($request,$response){
-        
-        
-
         $erreurArray=array();
         
         if(isset($request)){
@@ -28,9 +25,9 @@ final class AdminController
             if(empty($firstName)){
                 $erreurNom ="Merci d'entrer un nom";
                array_push($erreurArray,$erreurNom);
-                
+
             }else{
-                
+
                 if($firstName != filter_var($firstName, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH)){
                     $erreurFiltre ="Merci d'entrer un prénom valide";
                     array_push($erreurArray,$erreurFiltre);
@@ -57,7 +54,7 @@ final class AdminController
                     array_push($erreurArray,$erreurEmailExist);
                 }
             }
-            
+
             if (sizeof($erreurArray) ===0 ){
                 $password = password_hash($pass, PASSWORD_DEFAULT, array(
                     'cost' => 12,
@@ -69,8 +66,6 @@ final class AdminController
                 $Administrator->mail = $email;
                 $Administrator->password = $password;
                 $Administrator->save();
-                
-                
                 //return code 200
                 return $response->withJson(['Status Inscription' => 'Validé'], 201);
 

@@ -9,8 +9,16 @@
 namespace Controllers;
 
 
+use Models\Artist;
+
 class ArtistController
 {
-    
+
+	public function __construct(){ }
+
+	public function returnNameArtist($idArtist){
+        $res = Artist::select('nameArtist')->where('idArtist','like',$idArtist)->first();
+        return $res->nameArtist;
+    }
 
 }
