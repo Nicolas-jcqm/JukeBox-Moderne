@@ -2,9 +2,8 @@
 
 namespace Controllers;
 
-use App\Models\Adminnistrator;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
+use Models\Administrator;
+
 
 final class AdminController
 {
@@ -12,19 +11,17 @@ final class AdminController
     public function __construct(){
     }
 
-    public function Signup(Request $request, Response $response, $args){
-
-
-        $parsedBody = $request;
+    public function Signup($request,$response){
         $erreurArray=array();
         
-        
-        if(isset($parsedBody)){
-            $name = $parsedBody->getParsedBodyParam('name');
-            $firstName = $parsedBody->getParsedBodyParam('firstName');
-            $email = $parsedBody->getParsedBodyParam('mail');
-            $pass = $parsedBody->getParsedBodyParam('password');
-
+        if(isset($request)){
+            $name = $request->post('name');
+            echo $name;
+            var_dump($request);
+            $firstName = $request->post('firstName');
+            $email = $request->post('mail');
+            $pass = $request->post('password');
+            
             if(empty($firstName)){
                 $erreurNom ="Merci d'entrer un nom";
                array_push($erreurArray,$erreurNom);
@@ -52,7 +49,7 @@ final class AdminController
                     $erreurMailFiltre = "Merci d'entrer un email valide";
                     array_push($erreurArray,$erreurMailFiltre);
                 }
-                if(Adminnistrator::where('mail', '=', $email)->exists()){
+                if(Administrator::where('mail', '=', $email)->exists()){
                     $erreurEmailExist = "L'email existe déja";
                     array_push($erreurArray,$erreurEmailExist);
                 }
@@ -63,44 +60,42 @@ final class AdminController
                     'cost' => 12,
                 ));
 
-                $Adminnistrator = new Adminnistrator();
-                $Adminnistrator->name =$name;
-                $Adminnistrator->firstName = $firstName;
-                $Adminnistrator->mail = $email;
-                $Adminnistrator->password = $password;
-                $Adminnistrator->save();
-
-
+                $Administrator = new Administrator();
+                $Administrator->name =$name;
+                $Administrator->firstName = $firstName;
+                $Administrator->mail = $email;
+                $Administrator->password = $password;
+                $Administrator->save();
                 //return code 200
                 return $response->withJson(['Status Inscription' => 'Validé'], 201);
 
             }
 
             else{
-                return $response->withJson(['Status Inscription' => 'Erreur','Type' => 'Unprocessable entity', 'Erreurs' => $erreurArray ], 422);
+                //return $response->withJson(['Status Inscription' => 'Erreur','Type' => 'Unprocessable entity', 'Erreurs' => $erreurArray ], 422);
             }
 
-
+    
         }else{
             return $response->withJson(['Status Inscription' => 'Erreur','Type' => 'Unknow', 'Erreurs' => $erreurArray ], 500);
         }
     }
 
-    public function Signin(Request $request, Response $response, $args){
+    public function Signin($request, $response){
 
         $parsedBody = $request;
         $errorArray=array();
         
         
         if(isset($_POST)){
-            if (Adminnistrator::where('mail', '=', $_POST['mail'])->exists()){
+            if (Administrator::where('mail', '=', $_POST['mail'])->exists()){
                 
-                $Adminnistrator = Adminnistrator::where('mail', '=', $_POST['mail'])->first();
-                $password= $Adminnistrator->password;
+                $Administrator = Administrator::where('mail', '=', $_POST['mail'])->first();
+                $password= $Administrator->password;
                 
                 if (password_verify($_POST['password'],$password)) {
                     
-                    $_SESSION['Admin']= $Adminnistrator->mail;
+                    $_SESSION['Admin']= $Administrator->mail;
                     return $response->withJson(['Status connection' => 'Validé'], 200);
                 }
                 else{
