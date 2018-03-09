@@ -30,23 +30,21 @@ $app->get('/jukebox/{tokenJukebox}',function (Slim\Http\Request $req,  Slim\Http
     echo $jc->returnJukeBox($args['tokenJukebox']);
 });
 
-$app->get('/jukebox/:tokenJukebox/playlists',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
+$app->get('/jukebox/{tokenJukebox}/playlists',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $jc = new JukeboxController();
     echo $jc->returnPlaylists($args['tokenJukebox']);
 });
 
-$app->get('/jukebox/:tokenJukebox/playlist/tracks',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
+$app->get('/jukebox/{tokenJukebox}/playlist/tracks',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $jc = new JukeboxController();
     echo $jc->returnTracks($args['tokenJukebox']);
 });
 //Creation d'un jukebox
 $app->post('/jukebox', function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
-
     $jc = new JukeboxController();
     return $jc->addJukeBox($req, $res);
-
-
 });
+
 /*
 $app->post('/playlist/tracks',function() use ($app){
     if(isset($_POST['idPlaylist']) && isset($_POST['idTrack']) ){
