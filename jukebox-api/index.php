@@ -63,20 +63,20 @@ $app->post('/jukebox/:tokenJukebox/playlist/tracks',function($tokenJukeBox) use 
     foreach ($listTracks->tracks as $t) { echo $t; }
 })->name('tracksPlaylist');*/
 
-$app->post('/admin/signin',function() use ($app){
+$app->post('/admin/signin',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $ac = new AdminController();
-    return $ac->Signin($app->request, $app->response);
-})->name('admin_signin');
+    return $ac->Signin($req, $res);
+});
 
-$app->post('/admin/signup',function() use ($app){
+$app->post('/admin/signup',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $ac = new AdminController();
-    return $ac->Signup($app->request, $app->response);
-})->name('admin_signup');
+    return $ac->Signup($req, $res);
+});
 
-$app->get('/admin/logout',function() use ($app){
+$app->get('/admin/logout',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $ac = new AdminController();
-    return $ac->disconnect();
-})->name('admin_disconnect');
+    return $ac->disconnect($req, $res);
+});
 
 
 $app->run();
