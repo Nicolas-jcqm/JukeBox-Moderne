@@ -15,13 +15,12 @@ final class AdminController
         $erreurArray=array();
         
         if(isset($request)){
-            $name = $request->post('name');
-            echo $name;
-            var_dump($request);
-            $firstName = $request->post('firstName');
-            $email = $request->post('mail');
-            $pass = $request->post('password');
+            $name = $request->getParsedBodyParam('name');
+            $firstName = $request->getParsedBodyParam('firstName');
+            $email = $request->getParsedBodyParam('mail');
+            $pass = $request->getParsedBodyParam('password');
             
+
             if(empty($firstName)){
                 $erreurNom ="Merci d'entrer un nom";
                array_push($erreurArray,$erreurNom);
@@ -72,7 +71,7 @@ final class AdminController
             }
 
             else{
-                //return $response->withJson(['Status Inscription' => 'Erreur','Type' => 'Unprocessable entity', 'Erreurs' => $erreurArray ], 422);
+                return $response->withJson(['Status Inscription' => 'Erreur','Type' => 'Unprocessable entity', 'Erreurs' => $erreurArray ], 422);
             }
 
     
