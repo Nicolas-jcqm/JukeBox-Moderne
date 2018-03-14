@@ -8,7 +8,6 @@
 
 namespace Controllers;
 
-
 use Models\Artist;
 
 class ArtistController

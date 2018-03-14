@@ -18,8 +18,8 @@ class Kind extends Model{
     protected $primaryKey = 'idKind';
     public $timestamps = false;
 
-    public function playlists(){
-        return $this->hasMany("Models\Playlist",'idKind');
+    public function jukeboxLibraries(){
+        return $this->hasMany("Models\Queue",'idKind');
     }
 
     public function tracks(){

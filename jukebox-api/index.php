@@ -11,7 +11,7 @@ include_once 'vendor/autoload.php';
 
 use Controllers\JukeboxController;
 use Controllers\AdminController;
-use Controllers\PlaylistController;
+use Controllers\QueueController;
 use conf\Eloquent;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -30,12 +30,12 @@ $app->get('/jukebox/{tokenJukebox}',function (Slim\Http\Request $req,  Slim\Http
     echo $jc->returnJukeBox($args['tokenJukebox']);
 });
 
-$app->get('/jukebox/{tokenJukebox}/playlists',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
+$app->get('/jukebox/{tokenJukebox}/queues',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $jc = new JukeboxController();
-    echo $jc->returnPlaylists($args['tokenJukebox']);
+    echo $jc->returnQueues($args['tokenJukebox']);
 });
 
-$app->get('/jukebox/{tokenJukebox}/playlist/tracks',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
+$app->get('/jukebox/{tokenJukebox}/queue/tracks',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $jc = new JukeboxController();
     echo $jc->returnTracks($args['tokenJukebox']);
 });

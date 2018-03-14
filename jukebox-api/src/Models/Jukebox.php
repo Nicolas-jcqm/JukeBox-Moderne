@@ -17,12 +17,16 @@ class Jukebox extends Model {
     protected $primaryKey = 'idJukebox';
     public $timestamps = false;
 
-    public function playlists(){
-        return $this->hasMany("Models\Playlist", 'idJukebox');
+    public function queues(){
+        return $this->hasMany("Models\Queue", 'idJukebox');
     }
 
     public function administrator(){
         return $this->hasOne('Models\Administrator', 'administratorJukebox');
+    }
+
+    public function tracks(){
+        return $this->belongsToMany('\Models\Track', 'jukeboxlibrary', 'idJukebox', 'idTrack');
     }
 
 }

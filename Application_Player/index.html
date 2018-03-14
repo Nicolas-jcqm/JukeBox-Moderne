@@ -80,7 +80,7 @@
               $('h1').text(json_data.nameJukebox);
           });
             var tab= new Array();
-            $.getJSON('http://s07-gestion-appel-offre.zenserv.fr/index.php/jukebox/mynithluna/playlist/tracks', function(json_data){
+            $.getJSON('http://s07-gestion-appel-offre.zenserv.fr/index.php/jukebox/mynithluna/queue/tracks', function(json_data){
               for (var i = json_data.length - 1; i >= 0; i--) {
                 //document.getElementById("leftdiv").append(json_data[i].Title);
                 tab.push(json_data[i]);
