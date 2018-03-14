@@ -13,8 +13,6 @@ use Controllers\JukeboxController;
 use Controllers\AdminController;
 use Controllers\PlaylistController;
 use conf\Eloquent;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Psr\Http\Message\ResponseInterface as Response;
 
 Eloquent::init('src/conf/config.ini');
 
@@ -23,6 +21,13 @@ $app = new Slim\App([
         'displayErrorDetails' => true
     ]
 ]);
+
+$app->add(function(Slim\Http\Request $request, Slim\Http\Response $response, callable $next){
+	$response = $response->withHeader('Content-type', 'application/json; charset=utf-8');
+	$response = $response->withHeader('Access-Control-Allow-Origin', '*');
+	$response = $response->withHeader('Access-Control-Allow-Methods', 'OPTION, GET, POST, PUT, PATCH, DELETE');
+	return $next($request, $response);
+});
 
 $app->get('/jukebox/{tokenJukebox}',function (Slim\Http\Request $req,  Slim\Http\Response $res, $args)  use ($app){
     echo "<pre>";

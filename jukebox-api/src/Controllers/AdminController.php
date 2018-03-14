@@ -94,8 +94,11 @@ final class AdminController
                 
                 if (password_verify($_POST['password'],$password)) {
                     
+                    $token = bin2hex(openssl_random_pseudo_bytes(16));
+                    $_SESSION['token']= $token;
                     $_SESSION['Admin']= $Administrator->mail;
-                    return $response->withJson(['Status connection' => 'Validé'], 200);
+                    
+                    return $response->withJson(['Status connection' => 'Valide','token' =>  $token ], 200);
                 }
                 else{
                     
