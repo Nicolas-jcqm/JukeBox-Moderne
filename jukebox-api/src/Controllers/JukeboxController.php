@@ -55,13 +55,13 @@ class JukeboxController {
             return $response->withJson($jukebox)->withStatus(201);
         }catch (\Illuminate\Database\QueryException $e){
             $contentType = $request->getContentType();
-            /*if (strpos($contentType, 'application/json') !== false) {
+            if (strpos($contentType, 'application/json') !== false) {
                 $newResponse = $response->withJson(["erreur"=>"1"], 400);    
             }else{
-                $newResponse = $response->withJson()->withStatus(500);    
+                $newResponse = $response->withJson(["erreur"=>"2"])->withStatus(500);    
 
             }
-            return $newResponse;*/
+            return $newResponse;
         }
     }
 }
