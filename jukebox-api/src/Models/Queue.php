@@ -12,14 +12,14 @@ namespace Models;
 use \Illuminate\Database\Eloquent\Model;
 
 
-class Playlist extends Model{
+class Queue extends Model{
 
-    protected $table = 'playlist';
-    protected $primaryKey = 'idPlaylist';
+    protected $table = 'queue';
+    protected $primaryKey = 'idQueue';
     public $timestamps = false;
 
     public function tracks(){
-        return $this->belongsToMany(\Models\Track::class, 'playlist_track', 'idPlaylist', 'idTrack');
+        return $this->belongsToMany('\Models\Track', 'queueContent', 'idQueue', 'idTrack');
     }
 
     public function jukebox(){

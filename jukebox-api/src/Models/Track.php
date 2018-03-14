@@ -17,8 +17,12 @@ class Track extends Model {
     protected $primaryKey = 'idTrack';
     public $timestamps = false;
 
-    public function playlists(){
-        return $this->belongsToMany(\Models\Playlist::class, 'playlist_track', 'idTrack', 'idPlaylist');
+    public function queues(){
+        return $this->belongsToMany('\Models\Queue', 'queuecontent', 'idTrack', 'idQueue');
+    }
+
+    public function jukebox(){
+        return $this->belongsToMany('\Models\Jukebox', 'jukeboxlibrary', 'idTrack', 'idJukebox');
     }
 
     public function artist(){

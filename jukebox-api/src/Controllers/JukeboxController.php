@@ -10,15 +10,15 @@
 namespace Controllers;
 
 use Models\Jukebox;
-class JukeboxController {
 
-    private $pc;
+class JukeboxController{
+
+    private $qc;
 	private $ac;
 	private $ak;
 
-
     public function __construct(){
-        $this->pc =  new PlaylistController();
+        $this->qc =  new QueueController();
 		$this->ac = new ArtistController();
 		$this->ak = new KindController();
     }
@@ -27,18 +27,18 @@ class JukeboxController {
         return Jukebox::all();
     }
 
-    public function returnJukeBox($tokenJukeBox){
-        return Jukebox::where('tokenJukebox','like',$tokenJukeBox)->first();
+    public function returnJukebox($tokenJukebox){
+        return Jukebox::where('tokenJukebox','like',$tokenJukebox)->first();
     }
 
-    public function returnPlaylists($tokenJukebox){
+    public function returnQueues($tokenJukebox){
         $idJuk = $this->returnJukeBox($tokenJukebox);
-        return $this->pc->returnPlaylistsFromJukebox($idJuk->idJukebox);
+        return $this->qc->returnQueuesFromJukebox($idJuk->idJukebox);
     }
 
-    public function returnTracks($tokenJukeBox){
-        $idJuk = $this->returnJukeBox($tokenJukeBox);
-        return $this->returnJsonTracks($this->pc->returnActivePlaylist($idJuk->idJukebox));
+    public function returnTracks($tokenJukebox){
+        $idJuk = $this->returnJukeBox($tokenJukebox);
+        return $this->returnJsonTracks($this->qc->returnActiveQueue($idJuk->idJukebox));
     }
 
     public function returnJsonTracks($listTracks){
@@ -51,7 +51,7 @@ class JukeboxController {
 
     //creation d'un jukebox
     public function addJukeBox($request, $response){
-        
+        echo 'lol';
         $params = (array)json_decode($request->getBody());
         try{
             $jukebox = new Jukebox();
@@ -69,6 +69,7 @@ class JukeboxController {
                 $newResponse = $response->withJson(["erreur"=>"2"])->withStatus(500);    
 
             }
+
             return $newResponse;
         }
     }

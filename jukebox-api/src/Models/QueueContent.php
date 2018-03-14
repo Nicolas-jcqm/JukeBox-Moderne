@@ -11,10 +11,10 @@ namespace Models;
 
 use \Illuminate\Database\Eloquent\Model;
 
-class PlaylistTrack extends Model{
+class QueueContent extends Model{
 
-    protected $table = 'playlist_track';
-    protected $primaryKey = ['idPlaylist','idTrack'];
+    protected $table = 'queueContent';
+    protected $primaryKey = ['idQueue','idTrack'];
     public $timestamps = false;
 
 }
