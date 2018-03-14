@@ -5,7 +5,7 @@
             <form @submit.prevent="signin()" class="form-sign">
                 <div>
                     <label for="email">Email</label>
-                    <input v-model="user.email" id="email" />
+                    <input v-model="user.mail" id="email" />
                 </div>
                 <div>
                     <label for="email">Password</label>
@@ -24,7 +24,7 @@
         data() {
             return {
                 user: {
-                    email: "",
+                    mail: "",
                     password: ""
                 }
             }
@@ -50,7 +50,7 @@
         margin-right: auto;
         width: 30%;
         text-align: center;
-        background-color: lightskyblue;
+        background-color: lightgray;
         padding: 40px;
         border-radius: 20px 20px 20px 20px;
     }
