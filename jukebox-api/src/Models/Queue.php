@@ -19,7 +19,7 @@ class Queue extends Model{
     public $timestamps = false;
 
     public function tracks(){
-        return $this->belongsToMany('\Models\Track', 'queueContent', 'idQueue', 'idTrack');
+        return $this->belongsToMany('\Models\Track', 'queuecontent', 'idQueue', 'idTrack');
     }
 
     public function jukebox(){
