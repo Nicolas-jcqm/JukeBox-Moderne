@@ -30,9 +30,8 @@ $app->add(function(Slim\Http\Request $request, Slim\Http\Response $response, cal
 });
 
 $app->get('/jukebox/{tokenJukebox}',function (Slim\Http\Request $req,  Slim\Http\Response $res, $args)  use ($app){
-    echo "<pre>";
     $jc = new JukeboxController();
-    echo $jc->returnJukeBox($args['tokenJukebox']);
+    echo $jc->returnJukebox($args['tokenJukebox']);
 });
 
 $app->get('/jukebox/{tokenJukebox}/queues',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
