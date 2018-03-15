@@ -13,7 +13,7 @@ use \Illuminate\Database\Eloquent\Model;
 
 class QueueContent extends Model{
 
-    protected $table = 'queueContent';
+    protected $table = 'queuecontent';
     protected $primaryKey = ['idQueue','idTrack'];
     public $timestamps = false;
 
