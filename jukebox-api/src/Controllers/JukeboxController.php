@@ -27,18 +27,18 @@ class JukeboxController {
         return Jukebox::all();
     }
 
-    public function returnJukeBox($tokenJukeBox){
+    public function returJukebox($tokenJukeBox){
         return Jukebox::where('tokenJukebox','like',$tokenJukeBox)->first();
     }
 
-    public function returnPlaylists($tokenJukebox){
+    public function returnQueues($tokenJukebox){
         $idJuk = $this->returnJukeBox($tokenJukebox);
-        return $this->pc->returnPlaylistsFromJukebox($idJuk->idJukebox);
+        return $this->pc->returnQueuesFromJukebox($idJuk->idJukebox);
     }
 
     public function returnTracks($tokenJukeBox){
         $idJuk = $this->returnJukeBox($tokenJukeBox);
-        return $this->returnJsonTracks($this->pc->returnActivePlaylist($idJuk->idJukebox));
+        return $this->returnJsonTracks($this->pc->returnActiveQueues($idJuk->idJukebox));
     }
 
     public function returnJsonTracks($listTracks){
