@@ -12,6 +12,7 @@ include_once 'vendor/autoload.php';
 use Controllers\JukeboxController;
 use Controllers\AdminController;
 use Controllers\QueueController;
+use Controllers\TrackController;
 use conf\Eloquent;
 
 Eloquent::init('src/conf/config.ini');
@@ -30,7 +31,7 @@ $app->add(function(Slim\Http\Request $request, Slim\Http\Response $response, cal
 });
 
 $app->get('/jukebox/{tokenJukebox}',function (Slim\Http\Request $req,  Slim\Http\Response $res, $args)  use ($app){
-    echo "<pre>";
+    
     $jc = new JukeboxController();
     echo $jc->returnJukeBox($args['tokenJukebox']);
 });
@@ -48,6 +49,11 @@ $app->get('/jukebox/{tokenJukebox}/queue/tracks',function(Slim\Http\Request $req
 $app->post('/jukebox', function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $jc = new JukeboxController();
     return $jc->addJukeBox($req, $res);
+});
+//Afficher le catalogue
+$app->get('jukebox/trackCatalog', function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
+    $jc = new TrackController();
+    return $jc->returnTrackCatalog();
 });
 
 /*

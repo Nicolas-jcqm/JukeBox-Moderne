@@ -27,7 +27,7 @@ class JukeboxController {
         return Jukebox::all();
     }
 
-    public function returJukebox($tokenJukeBox){
+    public function returnJukebox($tokenJukeBox){
         return Jukebox::where('tokenJukebox','like',$tokenJukeBox)->first();
     }
 
@@ -37,7 +37,7 @@ class JukeboxController {
     }
 
     public function returnTracks($tokenJukeBox){
-        $idJuk = $this->returnJukeBox($tokenJukeBox);
+        $idJuk = $this->returnJukebox($tokenJukeBox);
         return $this->returnJsonTracks($this->pc->returnActiveQueues($idJuk->idJukebox));
     }
 
