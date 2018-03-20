@@ -33,10 +33,11 @@ export default {
         login({
             commit
         }, data) {
-            return api.post('/admin/signin', {
+            let json = {
                 mail: data.mail,
                 password: data.password
-            }).then(response => {
+            }
+            return api.post('/admin/signin', json).then(response => {
                 console.log(response);
                 ls.set('token', response.data.token)
                 commit("setConnectedUser", response.data)

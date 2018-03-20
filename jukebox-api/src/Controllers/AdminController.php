@@ -83,16 +83,22 @@ final class AdminController
     public function Signin($request, $response){
 
         $parsedBody = $request;
-        $errorArray=array();
+        $errorArray = array();
+       
+        $json = file_get_contents('php://input');
+        $obj = json_decode($json);
         
+
+
         
         if(isset($_POST)){
-            if (Administrator::where('mail', '=', $_POST['mail'])->exists()){
+            
+            if (Administrator::where('mail', '=', $obj->mail)->exists()){
                 
-                $Administrator = Administrator::where('mail', '=', $_POST['mail'])->first();
+                $Administrator = Administrator::where('mail', '=', $obj->mail)->first();
                 $password= $Administrator->password;
                 
-                if (password_verify($_POST['password'],$password)) {
+                if (password_verify($obj->password,$password)) {
                     
                     $token = bin2hex(openssl_random_pseudo_bytes(16));
                     $_SESSION['token']= $token;
@@ -123,6 +129,7 @@ final class AdminController
             return $response->withJson(['Status connection' => 'Erreur', 'Erreurs' => $erreurArray ], 500);
 
         }
+        
     }
 
     public function disconnect(Request $request, Response $response, $args){

@@ -22,10 +22,22 @@ $app = new Slim\App([
     ]
 ]);
 
+$middleware_co = function (Slim\Http\Request $request, Slim\Http\Response $response, $next) {
+    $token = $request->getAttribute('token');
+    if(isset($_SESSION['token'] && $_SESSION['token'] == $token)){
+        return $next($request, $response);
+    }else {
+        return $response->withJson(['Wrong token' => 'can t connect'], 401);
+    }
+
+};
+
+
 $app->add(function(Slim\Http\Request $request, Slim\Http\Response $response, callable $next){
 	$response = $response->withHeader('Content-type', 'application/json; charset=utf-8');
 	$response = $response->withHeader('Access-Control-Allow-Origin', '*');
 	$response = $response->withHeader('Access-Control-Allow-Methods', 'OPTION, GET, POST, PUT, PATCH, DELETE');
+    $response = $response->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization');
 	return $next($request, $response);
 });
 
