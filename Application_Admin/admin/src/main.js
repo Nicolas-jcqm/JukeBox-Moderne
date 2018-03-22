@@ -8,11 +8,11 @@ import interceptors from './services/interceptors'
 import ls from './services/ls'
 
 Vue.config.productionTip = false
-
+/*
 Vue.use(interceptors, {
 	router
 })
-
+*/
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

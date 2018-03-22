@@ -13,6 +13,7 @@ use Controllers\JukeboxController;
 use Controllers\AdminController;
 use Controllers\QueueController;
 use Controllers\TrackController;
+use Controllers\LibraryController;
 use conf\Eloquent;
 
 Eloquent::init('src/conf/config.ini');
@@ -22,18 +23,36 @@ $app = new Slim\App([
         'displayErrorDetails' => true
     ]
 ]);
+/**
+$middleware_co = function (Slim\Http\Request $request, Slim\Http\Response $response, $next) {
+    $token = $request->getAttribute('token');
+    if(isset($_SESSION['token'] && $_SESSION['token'] == $token)){
+        return $next($request, $response);
+    }else {
+        return $response->withJson(['Wrong token' => 'can t connect'], 401);
+    }
+
+};
+*/
 
 $app->add(function(Slim\Http\Request $request, Slim\Http\Response $response, callable $next){
 	$response = $response->withHeader('Content-type', 'application/json; charset=utf-8');
 	$response = $response->withHeader('Access-Control-Allow-Origin', '*');
 	$response = $response->withHeader('Access-Control-Allow-Methods', 'OPTION, GET, POST, PUT, PATCH, DELETE');
+    $response = $response->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization');
 	return $next($request, $response);
 });
 
-$app->get('/jukebox/{tokenJukebox}',function (Slim\Http\Request $req,  Slim\Http\Response $res, $args)  use ($app){
-    
+$app->get('/jukeboxs/{administratorJukebox}',function (Slim\Http\Request $req,  Slim\Http\Response $res, $args)  use ($app){
     $jc = new JukeboxController();
-    echo $jc->returnJukeBox($args['tokenJukebox']);
+
+    echo $jc->returnJukeboxAdmin($args['administratorJukebox']);
+});
+
+$app->get('/jukebox/{tokenJukebox}',function (Slim\Http\Request $req,  Slim\Http\Response $res, $args)  use ($app){
+    $jc = new JukeboxController();
+
+    echo $jc->returnJukebox($args['tokenJukebox']);
 });
 
 $app->get('/jukebox/{tokenJukebox}/queues',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
@@ -51,11 +70,21 @@ $app->post('/jukebox', function(Slim\Http\Request $req,  Slim\Http\Response $res
     return $jc->addJukeBox($req, $res);
 });
 //Afficher le catalogue
-$app->get('jukebox/trackCatalog', function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
+$app->get('/trackCatalog', function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $jc = new TrackController();
-    return $jc->returnTrackCatalog();
+    echo $jc->returnTrackCatalog();
+    
 });
-
+//Afficher la bibliothèque d'un jukebox
+$app->get('/jukebox/{tokenJukebox}/library/tracks', function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
+    $lc = new LibraryController();
+    echo $lc->returnLibraryTracks($args['tokenJukebox']);
+});
+//Supprimer musique de la blibliothèque
+$app->get('/jukebox/{tokenJukebox}/lol', function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
+    $lc = new LibraryController();
+    echo $lc->deleteTrackLibrary($args['tokenJukebox']);
+});
 /*
 $app->post('/playlist/tracks',function() use ($app){
     if(isset($_POST['idPlaylist']) && isset($_POST['idTrack']) ){
