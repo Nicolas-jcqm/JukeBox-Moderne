@@ -12,7 +12,15 @@
   <body>
 
     <div class="jumbotron">
+      <div class="bloc">
       <h1>JukeBox</h1>
+      <div id="qrcode" style="width:10px; height:10px; margin-left:80%; margin-bottom: 5%;">
+      </div>
+    <div class="inf" style="margin-left: 5%">
+    <h4>description</h4>
+    <h5>Administrateur</h5>
+  </div>
+</div>
     </div>
 
     <div class="container">
@@ -82,7 +90,6 @@
           $.getJSON('http://s07-gestion-appel-offre.zenserv.fr/index.php/jukebox/mynithluna', function(json_data){
               $('h1').text(json_data.nameJukebox);
               //infos pour jukebox
-              $('h3').text(json_data.nameJukebox);
               $('h4').text(json_data.description);
               $('h5').text(json_data.administratorJukebox);
 
@@ -99,7 +106,7 @@
       });
     </script>
 
-<div > <h2>QRCode et infos du JukeBox: </h2></div>
+<!-- <div > <h2>QRCode et infos du JukeBox: </h2></div>
 <div id="qrcode" style="width:150px; height:150px; margin-left:10%; margin-bottom: 2%"></div>
  </div>
  <br>
@@ -108,11 +115,11 @@
     <h4>description</h4>
     <h5>Administrateur</h5>
 </div>
-
+-->
 <script type="text/javascript">
 var qrcode = new QRCode(document.getElementById("qrcode"), {
-  width : 200,
-  height : 200,
+  width : 150,
+  height : 150,
  // useSVG: true
 });
 
