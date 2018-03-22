@@ -5,11 +5,22 @@
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
     <title>JukeBox Moderne</title>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="qrcode.js"></script>
   </head>
+
   <body>
-    
+
     <div class="jumbotron">
+      <div class="bloc">
       <h1>JukeBox</h1>
+      <div id="qrcode" style="width:10px; height:10px; margin-left:80%; margin-bottom: 5%;">
+      </div>
+    <div class="inf" style="margin-left: 5%">
+    <h4>description</h4>
+    <h5>Administrateur</h5>
+  </div>
+</div>
     </div>
 
     <div class="container">
@@ -57,12 +68,12 @@
       var index = 0;
       function recursive_play() {
         //If the index is the last of the table, play the sound
-        //without running a callback after       
+        //without running a callback after
         if (index + 1 === sounds.length) {
           play(sounds[index], null);
         } else {
           //Else, play the sound, and when the playing is complete
-          //increment index by one and play the sound in the 
+          //increment index by one and play the sound in the
           //indexth position of the array
           play(sounds[index], function() {
             index++;
@@ -78,6 +89,10 @@
       $(document).ready(function(){
           $.getJSON('http://s07-gestion-appel-offre.zenserv.fr/index.php/jukebox/mynithluna', function(json_data){
               $('h1').text(json_data.nameJukebox);
+              //infos pour jukebox
+              $('h4').text(json_data.description);
+              $('h5').text(json_data.administratorJukebox);
+
           });
             var tab= new Array();
             $.getJSON('http://s07-gestion-appel-offre.zenserv.fr/index.php/jukebox/mynithluna/queue/tracks', function(json_data){
@@ -90,5 +105,31 @@
         });
       });
     </script>
+
+<!-- <div > <h2>QRCode et infos du JukeBox: </h2></div>
+<div id="qrcode" style="width:150px; height:150px; margin-left:10%; margin-bottom: 2%"></div>
+ </div>
+ <br>
+ <div class="container" style="margin-left: 10%;"">
+    <h3>JukeBox</h3>
+    <h4>description</h4>
+    <h5>Administrateur</h5>
+</div>
+-->
+<script type="text/javascript">
+var qrcode = new QRCode(document.getElementById("qrcode"), {
+  width : 150,
+  height : 150,
+ // useSVG: true
+});
+
+function makeCode () {
+   var elText ='http://s07-gestion-appel-offre.zenserv.fr/index.php/jukebox/mynithluna';
+  qrcode.makeCode(elText);
+}
+
+makeCode();
+
+</script>
   </body>
 </html>
