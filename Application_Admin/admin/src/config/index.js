@@ -1,3 +1,4 @@
 export default {
-	remoteUrl: "http://localhost/php/JukeBox-Moderne/jukebox-api/index.php/",
+	remoteUrl: "http://localhost/jukebox-moderne/jukebox-api/index.php/",
 }
+//http://s07-gestion-appel-offre.zenserv.fr/index.php/
