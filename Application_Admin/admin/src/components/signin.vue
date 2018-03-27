@@ -31,9 +31,11 @@
         },
         methods: {
             signin() {
+
                 this.$store.dispatch('auth/login', this.user).then(response => {
+
                     this.$router.push({
-                        name: "home"
+                       name: "home"
                     })
                 })
             }

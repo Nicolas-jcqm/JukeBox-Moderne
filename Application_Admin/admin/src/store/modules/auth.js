@@ -37,7 +37,8 @@ export default {
                 mail: data.mail,
                 password: data.password
             }
-            return api.post('/admin/signin', json).then(response => {
+            console.log(json)
+            return api.post('admin/signin', json).then(response => {
                 console.log(response);
                 ls.set('token', response.data.token)
                 commit("setConnectedUser", response.data)
