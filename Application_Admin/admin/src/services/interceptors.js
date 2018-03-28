@@ -25,7 +25,13 @@ export default {
             return response;
         }, function (error) {
             if (error.response && error.response.status == 401) {
-                //ajoute un deconnection
+                console.log(401);
+                api.get('admin/logout').then(response => {
+                    console.log('deco')
+                    ls.remove('token')
+                }).catch(error => {
+                    console.log(error)
+                })
                 options.router.push({
                     name: 'signin'
                 })

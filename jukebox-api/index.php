@@ -6,6 +6,7 @@
  * Date: 19/02/2018
  * Time: 13:29
  */
+session_start();
 
 include_once 'vendor/autoload.php';
 
@@ -25,27 +26,29 @@ $app = new Slim\App([
 ]);
 
 $app->add(function(Slim\Http\Request $request, Slim\Http\Response $response, callable $next){
-    $response = $response->withHeader('Access-Control-Allow-Origin', '*');
+    $response = $response->withHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+    $response = $response->withHeader('Access-Control-Allow-Credentials', 'true');
 	$response = $response->withHeader('Content-type', 'application/json; charset=utf-8');
 	$response = $response->withHeader('Access-Control-Allow-Methods', 'OPTION, GET, POST, PUT, PATCH, DELETE');
     $response = $response->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization');
 	return $next($request, $response);
 });
 
+
 $middleware_co = function (Slim\Http\Request $request, Slim\Http\Response $response, $next) {
-    /*var_dump($_SESSION);
-    if(isset($_SESSION['token'])){ 
-           if($_SESSION['token'] == $token){
+    if(isset($_GET['token'])){
+        $tokenReq = $_GET['token'];
+    }
+    
+    if(isset($_SESSION['token'])){
+           if($_SESSION['token'] == $tokenReq){
             return $next($request, $response);
         }else {
-            return $response->withJson(['Wrong token' => 'can t connect'], 401);
+            return $response->withJson(['Wrong token' => 'can t connect'], 403);
         }
-      }
-      else {
-          return $response->withJson(['No token' => 'can t connect' . $_SESSION['token']], 401);
-      }
-      */
-    return $response->withJson(['No token' => 'can t connect'], 401);
+      }else {
+          return $response->withJson(['No token' => 'can t connect'], 401);
+      }  
 };
 
 $app->get('/jukeboxs/{administratorJukebox}',function (Slim\Http\Request $req,  Slim\Http\Response $res, $args)  use ($app){
@@ -123,6 +126,6 @@ $app->get('/admin/logout',function(Slim\Http\Request $req,  Slim\Http\Response $
 
 $app->get('/admin/test',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     return 'ok';
-});
+})->add($middleware_co);
 
 $app->run();

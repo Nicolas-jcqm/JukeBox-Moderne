@@ -2,20 +2,28 @@
 	<div class="back">
         <div class="login">
             <h1>Signin</h1>
-            <form @submit.prevent="signin()" class="form-sign">
+            <form @submit.prevent="signup()" class="form-sign">
                 <p class="red" v-if="erreur === true">Veuillez verifier vos information</p>
                 <div>
-                    <label for="email">Email</label>
-                    <input v-model="user.mail" id="email" />
+                    <label for="name">Nom</label>
+                    <input v-model="user.name" id="email" />
                 </div>
                 <div>
-                    <label for="email">Password</label>
+                    <label for="firstname">Prenom</label>
+                    <input v-model="user.firstname" id="prenom" />
+                </div>
+                <div>
+                    <label for="mail">Mail</label>
+                    <input v-model="user.mail" id="mail" />
+                </div>
+                <div>
+                    <label for="password">Password</label>
                     <input type="password" v-model="user.password" id="password" />
                 </div>
                 <input class="buttons" type="submit" value="Go !"/>
             </form>
-            <form @submit.prevent="signup()" class="form-sign">
-                <input class="buttons" type="submit" value="Signup"/>
+            <form @submit.prevent="signin()" class="form-sign">
+                <input class="buttons" type="submit" value="Signin"/>
             </form>
         </div>
 	</div>
@@ -31,33 +39,38 @@
                 erreur: false,
                 user: {
                     mail: "",
-                    password: ""
+                    password: "",
+                    name: "",
+                    firstname: ""
                 }
             }
         },
         methods: {
-            signin() {
+            signup() {
                 let json = {
                     mail: this.user.mail,
-                    password: this.user.password
+                    password: this.user.password,
+                    name: this.user.name,
+                    firstname: this.user.firstname
                 }
-                api.post('/admin/signin', json).then(response => {
-                    ls.set('token', response.data.token)
+                api.post('/admin/signup', json).then(response => {
+                    alert('Vous avez bien éte enregistré, vous allez etre redirigé vers la page de login')
                     this.$router.push({
-                        name: "home"
+                        name: "signin"
                     })
                 }).catch(error => {
                     this.erreur = true
                     console.log(error)
                 })
             },
-            signup(){
+            signin(){
                 this.$router.push({
-                    name: "signup"
+                    name: "signin"
                 })
             }
         }
     }
+
 </script>
 
 
@@ -91,6 +104,7 @@
     .buttons {
         margin-top: 9px;
     }
+    
     .red{
         color: indianred;
     }
