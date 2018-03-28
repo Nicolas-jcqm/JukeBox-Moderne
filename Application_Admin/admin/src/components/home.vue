@@ -59,6 +59,7 @@
 
 <script>
     import api from '../api'
+    import ls from '@/services/ls'
 
     export default {
         data() {
