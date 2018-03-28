@@ -5,6 +5,9 @@
       </b-jumbotron>
     </div>
     <div>
+        <form @submit.prevent="logout()" class="form-sign">
+            <input class="buttons" type="submit" value="logout !"/>
+        </form>
 
       <b-container class="bv-example-row">
         <b-row>
@@ -58,42 +61,56 @@
     import api from '../api'
 
     export default {
-      data () {
-        return {
-          form: {
-            administratorJukebox:'session',
-            nameJukebox: '',
-            descriptionJukebox: ''
-          },
-          show: true
-        }
-      },
+        data() {
+            return {
+                form: {
+                    administratorJukebox: 'session',
+                    nameJukebox: '',
+                    descriptionJukebox: ''
+                },
+                show: true
+            }
+        },
         methods: {
-          onSubmit (evt) {
-            let data = JSON.stringify(this.form);
-            console.log(data);
-            this.$store.dispatch('jukebox/createJukebox', data).then(response => {
-              console.log('cest passe!');
-            })
+            onSubmit(evt) {
+                let data = JSON.stringify(this.form);
+                console.log(data);
+                this.$store.dispatch('jukebox/createJukebox', data).then(response => {
+                    console.log('cest passe!');
+                })
 
-            evt.preventDefault();
+                evt.preventDefault();
 
-          },
-          onReset (evt) {
-            evt.preventDefault();
-            /* Reset our form values */
-            this.form.nameJukebox = '';
-            this.form.descriptionJukebox = '';
-            /* Trick to reset/clear native browser form validation state */
-            this.show = false;
-            this.$nextTick(() => { this.show = true });
-          },
-          goHistory(){
+            },
+            onReset(evt) {
+                evt.preventDefault();
+                /* Reset our form values */
+                this.form.nameJukebox = '';
+                this.form.descriptionJukebox = '';
+                /* Trick to reset/clear native browser form validation state */
+                this.show = false;
+                this.$nextTick(() => {
+                    this.show = true
+                });
+            },
+            goHistory() {
 
-            this.$router.push({
-              name: "history"
-            })
-          }
+                this.$router.push({
+                    name: "history"
+                })
+            },
+            
+            logout() {
+                api.get('admin/logout').then(response => {
+                    console.log('deco')
+                    ls.remove('token')
+                    this.$router.push({
+                        name: "signin"
+                    })
+                }).catch(error => {
+                    console.log(error)
+                })
+            }
         }
     }
 
@@ -101,7 +118,8 @@
 
 
 <style>
-.h1{
-  margin-bottom: 4%;
-}
+    .h1 {
+        margin-bottom: 4%;
+    }
+
 </style>
