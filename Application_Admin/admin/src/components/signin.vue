@@ -31,12 +31,21 @@
         },
         methods: {
             signin() {
-
-                this.$store.dispatch('auth/login', this.user).then(response => {
-
+                let json = {
+                    mail: this.user.mail,
+                    password: this.user.password
+                }
+                api.post('/admin/signin', json).then(response => {
+                    console.log(response);
+                    ls.set('token', response.data.token)
                     this.$router.push({
-                       name: "home"
+                        name: "home"
                     })
+                }).catch(error => {
+                    this.$router.push({
+                        name: "signin"
+                    })
+                    console.log(error)
                 })
             }
         }
