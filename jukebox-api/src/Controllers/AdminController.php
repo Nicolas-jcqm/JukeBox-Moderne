@@ -14,11 +14,15 @@ final class AdminController
     public function Signup($request,$response){
         $erreurArray=array();
         
-        if(isset($request)){
-            $name = $request->getParsedBodyParam('name');
-            $firstName = $request->getParsedBodyParam('firstName');
-            $email = $request->getParsedBodyParam('mail');
-            $pass = $request->getParsedBodyParam('password');
+            $json = file_get_contents('php://input');
+            $obj = json_decode($json);
+            echo 'ops';
+            var_dump($obj);
+            
+            $name = $obj->name;
+            $firstName = $obj->firstname;
+            $email = $obj->mail;
+            $pass = $obj->password;
             
 
             if(empty($firstName)){
@@ -73,11 +77,6 @@ final class AdminController
             else{
                 return $response->withJson(['Status Inscription' => 'Erreur','Type' => 'Unprocessable entity', 'Erreurs' => $erreurArray ], 422);
             }
-
-    
-        }else{
-            return $response->withJson(['Status Inscription' => 'Erreur','Type' => 'Unknow', 'Erreurs' => $erreurArray ], 500);
-        }
     }
 
     public function Signin($request, $response){
@@ -88,8 +87,6 @@ final class AdminController
         $json = file_get_contents('php://input');
         $obj = json_decode($json);
         
-
-
         
         if(isset($_POST)){
             
@@ -101,8 +98,9 @@ final class AdminController
                 if (password_verify($obj->password,$password)) {
                     
                     $token = bin2hex(openssl_random_pseudo_bytes(16));
-                    $_SESSION['token']= $token;
-                    $_SESSION['Admin']= $Administrator->mail;
+                    
+                    $_SESSION['token'] = $token;
+                    $_SESSION['Admin'] = $obj->mail;
                     
                     return $response->withJson(['Status connection' => 'Valide','token' =>  $token ], 200);
                 }
@@ -132,9 +130,10 @@ final class AdminController
         
     }
 
-    public function disconnect(Request $request, Response $response, $args){
+    public function disconnect($request, $response, $args){
         
         unset($_SESSION['Admin']);
+        unset($_SESSION['token']);
         
         return $response->withJson(['Status connection' => 'Deconnecté'], 200);
         
