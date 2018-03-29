@@ -10,11 +10,13 @@ session_start();
 
 include_once 'vendor/autoload.php';
 
-use Controllers\JukeboxController;
 use Controllers\AdminController;
+use Controllers\JukeboxController;
+use Controllers\JukeboxLibraryController;
+use Controllers\LibraryController;
+use Controllers\QueueContentController;
 use Controllers\QueueController;
 use Controllers\TrackController;
-use Controllers\LibraryController;
 use conf\Eloquent;
 
 Eloquent::init('src/conf/config.ini');
@@ -34,6 +36,14 @@ $app->add(function(Slim\Http\Request $request, Slim\Http\Response $response, cal
 	return $next($request, $response);
 });
 
+$app->post('/jukebox/library/track',function (Slim\Http\Request $req,  Slim\Http\Response $res, $args)  use ($app){
+    $jlc = new JukeboxLibraryController();
+    return $jlc->addTrackIntoLibrary($req, $res);
+});
+
+$app->post('/jukebox/queue/track',function (Slim\Http\Request $req,  Slim\Http\Response $res, $args)  use ($app){
+    $qcc = new QueueContentController();
+    return $qcc->addTrackIntoQueue($req, $res);
 
 $middleware_co = function (Slim\Http\Request $request, Slim\Http\Response $response, $next) {
     if(isset($_GET['token'])){
@@ -53,7 +63,6 @@ $middleware_co = function (Slim\Http\Request $request, Slim\Http\Response $respo
 
 $app->get('/jukeboxs/{administratorJukebox}',function (Slim\Http\Request $req,  Slim\Http\Response $res, $args)  use ($app){
     $jc = new JukeboxController();
-
     echo $jc->returnJukeboxAdmin($args['administratorJukebox']);
 });
 
@@ -77,6 +86,7 @@ $app->post('/jukebox', function(Slim\Http\Request $req,  Slim\Http\Response $res
     $jc = new JukeboxController();
     return $jc->addJukeBox($req, $res);
 });
+
 //Afficher le catalogue
 $app->get('/trackCatalog', function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $jc = new TrackController();
