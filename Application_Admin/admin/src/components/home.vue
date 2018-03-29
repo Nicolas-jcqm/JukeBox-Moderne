@@ -8,6 +8,10 @@
         <form @submit.prevent="logout()" class="form-sign">
             <input class="buttons" type="submit" value="logout !"/>
         </form>
+        
+        <form @submit.prevent="test()" class="form-sign">
+            <input class="buttons" type="submit" value="test !"/>
+        </form>
 
       <b-container class="bv-example-row">
         <b-row>
@@ -108,6 +112,13 @@
                     this.$router.push({
                         name: "signin"
                     })
+                }).catch(error => {
+                    console.log(error)
+                })
+            },
+            test() {
+                api.get('admin/test').then(response => {
+                    console.log(response.data);
                 }).catch(error => {
                     console.log(error)
                 })
