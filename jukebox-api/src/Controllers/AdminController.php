@@ -132,7 +132,7 @@ final class AdminController
         
     }
 
-    public function disconnect(Request $request, Response $response, $args){
+    public function disconnect($request, $response, $args){
         
         unset($_SESSION['Admin']);
         

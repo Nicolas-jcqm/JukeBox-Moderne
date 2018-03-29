@@ -19,6 +19,7 @@
 
 <script>
     import api from '../api'
+    import ls from '@/services/ls'
 
     export default {
         data() {
@@ -36,7 +37,7 @@
                     password: this.user.password
                 }
                 api.post('/admin/signin', json).then(response => {
-                    console.log(response);
+                    console.log(response.data.token)
                     ls.set('token', response.data.token)
                     this.$router.push({
                         name: "home"

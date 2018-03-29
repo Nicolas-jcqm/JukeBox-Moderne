@@ -23,25 +23,30 @@ $app = new Slim\App([
         'displayErrorDetails' => true
     ]
 ]);
-/**
-$middleware_co = function (Slim\Http\Request $request, Slim\Http\Response $response, $next) {
-    $token = $request->getAttribute('token');
-    if(isset($_SESSION['token'] && $_SESSION['token'] == $token)){
-        return $next($request, $response);
-    }else {
-        return $response->withJson(['Wrong token' => 'can t connect'], 401);
-    }
-
-};
-*/
 
 $app->add(function(Slim\Http\Request $request, Slim\Http\Response $response, callable $next){
+    $response = $response->withHeader('Access-Control-Allow-Origin', '*');
 	$response = $response->withHeader('Content-type', 'application/json; charset=utf-8');
-	$response = $response->withHeader('Access-Control-Allow-Origin', '*');
 	$response = $response->withHeader('Access-Control-Allow-Methods', 'OPTION, GET, POST, PUT, PATCH, DELETE');
     $response = $response->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization');
 	return $next($request, $response);
 });
+
+$middleware_co = function (Slim\Http\Request $request, Slim\Http\Response $response, $next) {
+    /*var_dump($_SESSION);
+    if(isset($_SESSION['token'])){ 
+           if($_SESSION['token'] == $token){
+            return $next($request, $response);
+        }else {
+            return $response->withJson(['Wrong token' => 'can t connect'], 401);
+        }
+      }
+      else {
+          return $response->withJson(['No token' => 'can t connect' . $_SESSION['token']], 401);
+      }
+      */
+    return $response->withJson(['No token' => 'can t connect'], 401);
+};
 
 $app->get('/jukeboxs/{administratorJukebox}',function (Slim\Http\Request $req,  Slim\Http\Response $res, $args)  use ($app){
     $jc = new JukeboxController();
@@ -116,5 +121,8 @@ $app->get('/admin/logout',function(Slim\Http\Request $req,  Slim\Http\Response $
     return $ac->disconnect($req, $res);
 });
 
+$app->get('/admin/test',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
+    return 'ok';
+});
 
 $app->run();

@@ -12,13 +12,11 @@ Vue.config.productionTip = false
 
 Vue.use(BootstrapVue);
 require('../node_modules/bootstrap/dist/css/bootstrap.css')
-/*
+
 Vue.use(interceptors, {
 	router
 })
 
-
-*/
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
