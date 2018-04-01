@@ -130,4 +130,10 @@ class JukeboxController {
         }
     }
 
+    public function jukeboxExist($id){
+        $exists = Jukebox::where('idJukebox','=',$id)->get()->count();
+        if($exists == 1) return true;
+            else return false;
+    }
+
 }
