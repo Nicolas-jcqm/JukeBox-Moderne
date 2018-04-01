@@ -7,6 +7,7 @@ export default {
     install: (Vue, options = {}) => {
         // Add a request interceptor
         api.interceptors.request.use(function (config) {
+
             if (typeof ls.get('token') !== 'undefined') {
 
                 if (!config.params) {

@@ -6,12 +6,16 @@ import router from './router'
 import store from './store'
 import BootstrapVue from 'bootstrap-vue'
 import interceptors from './services/interceptors'
+import draggable from 'vuedraggable'
+
+
 import ls from './services/ls'
 
 Vue.config.productionTip = false
 
 Vue.use(BootstrapVue);
 require('../node_modules/bootstrap/dist/css/bootstrap.css')
+
 
 Vue.use(interceptors, {
 	router
@@ -22,6 +26,7 @@ new Vue({
   el: '#app',
   router,
   store,
+  draggable,
   template: '<App/>',
   components: { App }
 })

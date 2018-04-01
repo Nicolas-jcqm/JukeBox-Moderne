@@ -2,6 +2,8 @@
   <div>
     <div>
       <b-jumbotron bg-variant="info" text-variant="white" header="Jukebox moderne" lead="Admin application" >
+        <b-button v-on:click="logout()" variant="outline-danger">Log out</b-button>
+
       </b-jumbotron>
     </div>
     <b-container>
@@ -20,7 +22,7 @@
             <p class="card-text">
               {{j.description}}
             </p>
-            <b-button href="#" variant="info">See playlist</b-button>
+            <b-button v-on:click="goCatalogu(j.tokenJukebox)" variant="info">See playlist</b-button>
           </b-card>
           </b-col>
         </div>
@@ -48,6 +50,16 @@
       }).catch(error => {
         console.log(error)
       })
+    },
+    methods :{
+      goCatalogu(token){
+        this.$router.push({
+          name: "catalog",
+          params: {
+                    tokenJukebox:token
+                  }
+        })
+      }
     }
 
   }

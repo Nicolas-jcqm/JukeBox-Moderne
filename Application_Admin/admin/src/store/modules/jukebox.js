@@ -21,7 +21,7 @@ export default {
   getters : {
     getJukeboxs(state)  {
       return state.jukebox;
-    },
+    }
   },
   actions: {
     createJukebox({
@@ -44,6 +44,5 @@ export default {
         console.log(error)
       })
     }
-
   }
 }
