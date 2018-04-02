@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le :  jeu. 15 mars 2018 à 12:49
+-- Généré le :  lun. 02 avr. 2018 à 15:45
 -- Version du serveur :  5.7.19
 -- Version de PHP :  7.0.23
 
@@ -102,6 +102,7 @@ DROP TABLE IF EXISTS `jukeboxlibrary`;
 CREATE TABLE IF NOT EXISTS `jukeboxlibrary` (
   `idJukebox` int(11) NOT NULL,
   `idTrack` int(11) NOT NULL,
+  PRIMARY KEY (`idJukebox`,`idTrack`),
   KEY `jukeboxlibrary_ctrtJukebox` (`idJukebox`),
   KEY `jukeboxlibrary_ctrtTrack` (`idTrack`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -123,7 +124,9 @@ INSERT INTO `jukeboxlibrary` (`idJukebox`, `idTrack`) VALUES
 (1, 10),
 (1, 11),
 (1, 12),
-(1, 13);
+(1, 13),
+(1, 18),
+(1, 19);
 
 -- --------------------------------------------------------
 
@@ -181,26 +184,29 @@ INSERT INTO `queue` (`idQueue`, `nameQueue`, `durationQueue`, `descriptionQueue`
 
 DROP TABLE IF EXISTS `queuecontent`;
 CREATE TABLE IF NOT EXISTS `queuecontent` (
+  `idQueueContent` int(11) NOT NULL AUTO_INCREMENT,
   `idQueue` int(11) NOT NULL,
   `idTrack` int(11) NOT NULL,
   `positionTrack` int(11) NOT NULL,
   `userTrack` varchar(50) NOT NULL,
-  KEY `queueContent_ctrtPlaylist` (`idQueue`),
-  KEY `queueContent_ctrtTrack` (`idTrack`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  `score` int(5) DEFAULT NULL,
+  PRIMARY KEY (`idQueueContent`)
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `queuecontent`
 --
 
-INSERT INTO `queuecontent` (`idQueue`, `idTrack`, `positionTrack`, `userTrack`) VALUES
-(1, 1, 1, 'admin'),
-(1, 2, 2, 'client'),
-(1, 3, 3, 'admin'),
-(1, 4, 5, 'admin'),
-(1, 5, 7, 'user'),
-(1, 6, 6, 'admin'),
-(1, 7, 4, 'admin');
+INSERT INTO `queuecontent` (`idQueueContent`, `idQueue`, `idTrack`, `positionTrack`, `userTrack`, `score`) VALUES
+(1, 1, 1, 1, 'admin', 0),
+(2, 1, 2, 2, 'client', 0),
+(3, 1, 3, 3, 'admin', 0),
+(4, 1, 4, 5, 'admin', 0),
+(5, 1, 5, 7, 'user', 0),
+(6, 1, 6, 6, 'admin', 0),
+(7, 1, 7, 4, 'admin', 1),
+(8, 1, 8, 8, 'test', NULL),
+(9, 1, 8, 9, 'test', NULL);
 
 -- --------------------------------------------------------
 
@@ -214,7 +220,6 @@ CREATE TABLE IF NOT EXISTS `track` (
   `titleTrack` varchar(100) NOT NULL,
   `durationTrack` float NOT NULL,
   `descriptionTrack` varchar(500) NOT NULL,
-  `scoreTrack` float NOT NULL,
   `yearTrack` int(4) NOT NULL,
   `pictureTrack` varchar(100) NOT NULL,
   `urlTrack` varchar(100) NOT NULL,
@@ -229,27 +234,27 @@ CREATE TABLE IF NOT EXISTS `track` (
 -- Déchargement des données de la table `track`
 --
 
-INSERT INTO `track` (`idTrack`, `titleTrack`, `durationTrack`, `descriptionTrack`, `scoreTrack`, `yearTrack`, `pictureTrack`, `urlTrack`, `idArtist`, `idKind`) VALUES
-(3, 'In the End', 3.37, 'NULL', 0, 2000, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/LinkinPark/InTheEnd.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/LinkinPark/InTheEnd.mp3', 1, 1),
-(1, 'Numb', 3.06, 'NULL', 0, 2003, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/LinkinPark/Numb.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/LinkinPark/Numb.mp3', 1, 1),
-(4, 'Warriors', 2.5, 'Musique LOL mondial 2014', 0, 2014, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/ImagineDragons/Warriors.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/ImagineDragons/Warriors.mp3', 2, 1),
-(5, 'Demons', 2.57, 'description demons imagine dragons', 0, 2012, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/ImagineDragons/Demons.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/ImagineDragons/Demons.m4a', 2, 1),
-(6, 'It\'s Time', 4, 'description it\'s time ', 0, 2012, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/ImagineDragons/It\'sTime.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/ImagineDragons/It\'sTime.mp3', 2, 1),
-(7, 'Radioactive', 3.06, 'description radioactive', 0, 2012, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/ImagineDragons/Radioactive.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/ImagineDragons/Radioactive.mp3', 2, 1),
-(2, 'Breaking The Habit ', 3.16, '', 0, 2003, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/LinkinPark/BreakingThe Habit.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/LinkinPark/BreakingTheHabit.mp3', 1, 1),
-(8, 'Burn It Down', 3.5, '', 0, 2012, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/LinkinPark/BurnItDown.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/LinkinPark/BurnItDown.mp3', 1, 1),
-(9, 'Faint', 2.42, '', 0, 2003, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/LinkinPark/Faint.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/LinkinPark/Faint.mp3', 1, 1),
-(10, 'New Divide', 4.33, '', 0, 2009, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/LinkinPark/NewDivide.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/LinkinPark/NewDivide.mp3', 1, 1),
-(11, 'The Catalyst', 3.45, '', 0, 2010, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/LinkinPark/TheCatalyst.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/LinkinPark/TheCatalyst.mp3', 1, 1),
-(12, 'What I\'ve Done ', 3.31, '', 0, 2007, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/LinkinPark/WhatI\'VeDone.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/LinkinPark/WhatI\'VeDone.mp3', 1, 1),
-(13, 'BlackHeart', 4.26, '', 0, 2012, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/TwoStepsFromHell/Skyworld.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/TwoStepsFromHell/Blackheart.mp3', 3, 2),
-(14, 'Breathe', 2.55, '', 0, 2012, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/TwoStepsFromHell/Skyworld.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/TwoStepsFromHell/Breathe.mp3', 3, 2),
-(15, 'Compass', 4.22, '', 0, 2014, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/TwoStepsFromHell/Miracles.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/TwoStepsFromHell/Compass.mp3', 3, 2),
-(16, 'Flight Of the Silverbird', 3.27, '', 0, 2015, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/TwoStepsFromHell/Battlecry.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/TwoStepsFromHell/FlightOfTheSilverbird.mp3', 3, 2),
-(17, 'Ocean Princess', 2.57, '', 0, 2011, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/TwoStepsFromHell/Illusions.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/TwoStepsFromHell/OceanPrincess.mp3', 3, 2),
-(18, 'Protectors of the Earth', 2.51, '', 0, 2010, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/TwoStepsFromHell/Invincibles.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/TwoStepsFromHell/ProtectorsOfTheEarth.mp3', 3, 2),
-(19, 'Start Sky', 5.39, '', 0, 2015, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/TwoStepsFromHell/Battlecry.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/TwoStepsFromHell/StarSky.mp3', 3, 2),
-(20, 'Victory', 5.28, '', 0, 2015, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/TwoStepsFromHell/Battlecry.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/TwoStepsFromHell/Victory.mp3', 3, 2);
+INSERT INTO `track` (`idTrack`, `titleTrack`, `durationTrack`, `descriptionTrack`, `yearTrack`, `pictureTrack`, `urlTrack`, `idArtist`, `idKind`) VALUES
+(3, 'In the End', 3.37, 'NULL', 2000, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/LinkinPark/InTheEnd.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/LinkinPark/InTheEnd.mp3', 1, 1),
+(1, 'Numb', 3.06, 'NULL', 2003, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/LinkinPark/Numb.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/LinkinPark/Numb.mp3', 1, 1),
+(4, 'Warriors', 2.5, 'Musique LOL mondial 2014', 2014, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/ImagineDragons/Warriors.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/ImagineDragons/Warriors.mp3', 2, 1),
+(5, 'Demons', 2.57, 'description demons imagine dragons', 2012, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/ImagineDragons/Demons.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/ImagineDragons/Demons.m4a', 2, 1),
+(6, 'It\'s Time', 4, 'description it\'s time ', 2012, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/ImagineDragons/It\'sTime.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/ImagineDragons/It\'sTime.mp3', 2, 1),
+(7, 'Radioactive', 3.06, 'description radioactive', 2012, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/ImagineDragons/Radioactive.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/ImagineDragons/Radioactive.mp3', 2, 1),
+(2, 'Breaking The Habit ', 3.16, '', 2003, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/LinkinPark/BreakingThe Habit.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/LinkinPark/BreakingTheHabit.mp3', 1, 1),
+(8, 'Burn It Down', 3.5, '', 2012, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/LinkinPark/BurnItDown.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/LinkinPark/BurnItDown.mp3', 1, 1),
+(9, 'Faint', 2.42, '', 2003, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/LinkinPark/Faint.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/LinkinPark/Faint.mp3', 1, 1),
+(10, 'New Divide', 4.33, '', 2009, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/LinkinPark/NewDivide.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/LinkinPark/NewDivide.mp3', 1, 1),
+(11, 'The Catalyst', 3.45, '', 2010, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/LinkinPark/TheCatalyst.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/LinkinPark/TheCatalyst.mp3', 1, 1),
+(12, 'What I\'ve Done ', 3.31, '', 2007, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/LinkinPark/WhatI\'VeDone.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/LinkinPark/WhatI\'VeDone.mp3', 1, 1),
+(13, 'BlackHeart', 4.26, '', 2012, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/TwoStepsFromHell/Skyworld.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/TwoStepsFromHell/Blackheart.mp3', 3, 2),
+(14, 'Breathe', 2.55, '', 2012, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/TwoStepsFromHell/Skyworld.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/TwoStepsFromHell/Breathe.mp3', 3, 2),
+(15, 'Compass', 4.22, '', 2014, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/TwoStepsFromHell/Miracles.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/TwoStepsFromHell/Compass.mp3', 3, 2),
+(16, 'Flight Of the Silverbird', 3.27, '', 2015, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/TwoStepsFromHell/Battlecry.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/TwoStepsFromHell/FlightOfTheSilverbird.mp3', 3, 2),
+(17, 'Ocean Princess', 2.57, '', 2011, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/TwoStepsFromHell/Illusions.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/TwoStepsFromHell/OceanPrincess.mp3', 3, 2),
+(18, 'Protectors of the Earth', 2.51, '', 2010, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/TwoStepsFromHell/Invincibles.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/TwoStepsFromHell/ProtectorsOfTheEarth.mp3', 3, 2),
+(19, 'Start Sky', 5.39, '', 2015, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/TwoStepsFromHell/Battlecry.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/TwoStepsFromHell/StarSky.mp3', 3, 2),
+(20, 'Victory', 5.28, '', 2015, 'http://s07-gestion-appel-offre.zenserv.fr/pictures/TwoStepsFromHell/Battlecry.jpg', 'http://s07-gestion-appel-offre.zenserv.fr/music/TwoStepsFromHell/Victory.mp3', 3, 2);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

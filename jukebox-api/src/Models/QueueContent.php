@@ -14,7 +14,8 @@ use \Illuminate\Database\Eloquent\Model;
 class QueueContent extends Model{
 
     protected $table = 'queuecontent';
-    protected $primaryKey = ['idQueue','idTrack'];
+    protected $primaryKey = 'idQueueContent';
     public $timestamps = false;
+
 
 }

@@ -32,28 +32,49 @@ class QueueContentController
      */
     public function addTrackIntoQueue($request, $reponse) {
         $params = (array)json_decode($request->getBody());
+        $queue = $this->qc->returnQueuesFromJukebox($params["idJukebox"]);
 
-            // D'un jukebox, numero de la queue , numero de la musique, statut de la personnne
-                if (isset($params["idQueue"]) && $this->qc->queueExist($params["idQueue"])) {
-                    if (isset($params['idTrack']) && $this->tc->trackExist($params['idTrack'])) {
-                        if (isset($params['userTrack'])) {
-                            $newTrackIntoQueue = new QueueContent();
-                            $newTrackIntoQueue->idQueue = $params["idQueue"];
-                            $newTrackIntoQueue->idTrack = $params["idTrack"];
-                            $newTrackIntoQueue->positionTrack = $this->returnLengthQueue($params["idQueue"]);
-                            $newTrackIntoQueue->userTrack = $params["userTrack"];
-                            $newTrackIntoQueue->save();
-                            return json_encode(array('success'=>'track insert into queue'));
-                        } else return json_encode(array('error'=>'user unknown'));
-                    } else return json_encode(array('error'=>'track unknown'));
-                } else return json_encode(array('error'=>'queue unknown'));
+        // D'un jukebox, numero de la queue , numero de la musique, statut de la personnne
+        if ($this->qc->queueExist($queue->idQueue)) {
+
+            if (isset($params['idTrack']) && $this->tc->trackExist($params['idTrack'])) {
+                if (isset($params['userTrack'])) {
+                    $newTrackIntoQueue = new QueueContent();
+                    $newTrackIntoQueue->idQueue = $queue->idQueue;
+                    $newTrackIntoQueue->idTrack = $params["idTrack"];
+                    $newTrackIntoQueue->positionTrack = $this->returnLengthQueue($queue->idQueue);
+                    $newTrackIntoQueue->userTrack = $params["userTrack"];
+                    $newTrackIntoQueue->save();
+                    return json_encode(array('success'=>'track insert into queue'));
+                } else {
+                    return json_encode(array('error'=>'user unknown'));
+                }
+            } else {
+                return json_encode(array('error'=>'track unknown'));
+            }
+        } else{
+            return json_encode(array('error'=>'queue unknown'));
         }
+    }
 
 
     public function returnLengthQueue($idQueue){
         return QueueContent::where('idQueue','=',$idQueue)->count()+1;
     }
 
+    public function vote($request, $response) {
+        $params = (array)json_decode($request->getBody());
 
+        if (isset($params["idQueue"]) && $this->qc->queueExist($params["idQueue"])) {
+            if (isset($params['idTrack']) && $this->tc->trackExist($params['idTrack'])) {
+                if (isset($params['score'])) {
+                    $trackVote = QueueContent::where('idQueue','=',$params["idQueue"])->where('idTrack','=',$params["idTrack"])->first();
+                    if($params['score'] == 1) $trackVote->score = $trackVote->score +1;
+                    $trackVote->save();
+                    return json_encode(array('success'=>'score update'));
+                } else return json_encode(array('error'=>'score unknown 2'));
+            } else return json_encode(array('error'=>'track unknown'));
+        } else return json_encode(array('error'=>'queue unknown'));
+    }
 
 }
