@@ -87,6 +87,7 @@
                     mail: this.user.mail,
                     password: this.user.password
                 }
+                ls.remove('token')
                 api.post('/admin/signin', json).then(response => {
                     ls.set('token', response.data.token)
                   ls.set('administratorJukebox', response.data.administratorJukebox)

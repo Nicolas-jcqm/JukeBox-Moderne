@@ -105,6 +105,7 @@
                     name: this.user.name,
                     firstname: this.user.firstname
                 }
+                ls.remove('token')
                 api.post('/admin/signup', json).then(response => {
                     alert('Vous avez bien éte enregistré, vous allez etre redirigé vers la page de login')
                     this.$router.push({

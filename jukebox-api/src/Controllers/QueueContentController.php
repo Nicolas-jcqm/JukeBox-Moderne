@@ -55,6 +55,7 @@ class QueueContentController
         } else{
          return json_encode(array('error'=>'queue unknown'));
          }
+
     }
 
 
@@ -62,6 +63,19 @@ class QueueContentController
         return QueueContent::where('idQueue','=',$idQueue)->count()+1;
     }
 
+    public function vote($request, $response) {
+        $params = (array)json_decode($request->getBody());
 
+        if (isset($params["idQueue"]) && $this->qc->queueExist($params["idQueue"])) {
+            if (isset($params['idTrack']) && $this->tc->trackExist($params['idTrack'])) {
+                if (isset($params['score'])) {
+                    $trackVote = QueueContent::where('idQueue','=',$params["idQueue"])->where('idTrack','=',$params["idTrack"])->first();
+                    if($params['score'] == 1) $trackVote->score = $trackVote->score +1;
+                    $trackVote->save();
+                    return json_encode(array('success'=>'score update'));
+                } else return json_encode(array('error'=>'score unknown 2'));
+            } else return json_encode(array('error'=>'track unknown'));
+        } else return json_encode(array('error'=>'queue unknown'));
+    }
 
 }
