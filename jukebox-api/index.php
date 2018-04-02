@@ -41,9 +41,10 @@ $app->post('/jukebox/library/track',function (Slim\Http\Request $req,  Slim\Http
     return $jlc->addTrackIntoLibrary($req, $res);
 });
 
-$app->post('/jukebox/queue/track',function (Slim\Http\Request $req,  Slim\Http\Response $res, $args)  use ($app){
+$app->post('/jukebox/queue/track',function (Slim\Http\Request $req,  Slim\Http\Response $res, $args)  use ($app) {
     $qcc = new QueueContentController();
     return $qcc->addTrackIntoQueue($req, $res);
+});
 
 $middleware_co = function (Slim\Http\Request $request, Slim\Http\Response $response, $next) {
     if(isset($_GET['token'])){
@@ -85,19 +86,18 @@ $app->get('/jukebox/{tokenJukebox}/queue/tracks',function(Slim\Http\Request $req
 $app->post('/jukebox', function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $jc = new JukeboxController();
     return $jc->addJukeBox($req, $res);
-})->add($middleware_co);
 });
 //Afficher le catalogue
 $app->get('/trackCatalog', function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $jc = new TrackController();
     echo $jc->returnTrackCatalog();
-    
 });
+
 //Afficher la bibliothèque d'un jukebox
 $app->get('/jukebox/{tokenJukebox}/library/tracks', function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $lc = new LibraryController();
     echo $lc->returnLibraryTracks($args['tokenJukebox']);
-})->add($middleware_co);
+});
 //Supprimer musique de la blibliothèque
 /**$app->get('/jukebox/{tokenJukebox}/lol', function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $lc = new LibraryController();
@@ -131,11 +131,7 @@ $app->post('/admin/signup',function(Slim\Http\Request $req,  Slim\Http\Response 
 
 $app->get('/admin/logout',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $ac = new AdminController();
-    return $ac->disconnect($req, $res);
+    return $ac->disconnect($req, $res,$args);
 });
-
-$app->get('/admin/test',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
-    return 'ok';
-})->add($middleware_co);
 
 $app->run();

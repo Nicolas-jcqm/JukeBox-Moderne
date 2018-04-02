@@ -94,6 +94,7 @@ final class AdminController
                 
                 $Administrator = Administrator::where('mail', '=', $obj->mail)->first();
                 $password= $Administrator->password;
+                $mail = $Administrator->mail;
                 
                 if (password_verify($obj->password,$password)) {
                     
@@ -102,7 +103,7 @@ final class AdminController
                     $_SESSION['token'] = $token;
                     $_SESSION['Admin'] = $obj->mail;
                     
-                    return $response->withJson(['Status connection' => 'Valide','token' =>  $token ], 200);
+                    return $response->withJson(['Status connection' => 'Valide','token' =>  $token ,'administratorJukebox' => $mail], 200);
                 }
                 else{
                     

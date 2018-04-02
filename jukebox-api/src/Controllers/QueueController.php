@@ -23,7 +23,7 @@ class QueueController
 
     public function returnQueuesFromJukebox($idJuk)
     {
-        return Queue::where('idJukebox', '=', $idJuk)->get();
+        return Queue::where('idJukebox', '=', $idJuk)->first();
     }
 
     /**
@@ -38,7 +38,7 @@ class QueueController
 
     public function queueExist($idQueue)
     {
-        return Queue::where('idQueue', '=', $idQueue)->get()->count() == 1;
+        return Queue::find($idQueue)->exists;
     }
 
 }
