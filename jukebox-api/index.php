@@ -55,7 +55,7 @@ $middleware_co = function (Slim\Http\Request $request, Slim\Http\Response $respo
            if($_SESSION['token'] == $tokenReq){
             return $next($request, $response);
         }else {
-            return $response->withJson(['Wrong token' => 'can t connect'], 403);
+            return $response->withJson(['Wrong token' => 'can t connect'], 401);
         }
       }else {
           return $response->withJson(['No token' => 'can t connect'], 401);
@@ -87,12 +87,12 @@ $app->get('/jukebox/{tokenJukebox}/queue/tracks',function(Slim\Http\Request $req
 $app->post('/jukebox', function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $jc = new JukeboxController();
     return $jc->addJukeBox($req, $res);
-});
+})->add($middleware_co);
 //Afficher le catalogue
 $app->get('/trackCatalog', function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $jc = new TrackController();
     echo $jc->returnTrackCatalog();
-});
+})->add($middleware_co);
 
 //Afficher la bibliothèque d'un jukebox
 $app->get('/jukebox/{tokenJukebox}/library/tracks', function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){

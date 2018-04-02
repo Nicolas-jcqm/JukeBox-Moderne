@@ -52,7 +52,7 @@
                                 label-for="password">
                     <b-form-input id="password"
                                   class="text-center"
-                                  type="text"
+                                  type="password"
                                   v-model="user.password"
                                   required
                                   placeholder="Enter a name ..">
