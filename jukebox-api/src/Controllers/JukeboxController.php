@@ -107,7 +107,7 @@ class JukeboxController {
             //si aucune erreur
             if (sizeof($erreurArray) ===0 ){
                
-            //Faire la création de token
+
                 $jukebox = new Jukebox();
                 $jukebox->nameJukebox = $nameJukebox;
                 $jukebox->administratorJukebox = $administratorJukebox;

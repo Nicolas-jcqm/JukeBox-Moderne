@@ -2,16 +2,12 @@
 	<div>
     <div>
       <b-jumbotron bg-variant="info" text-variant="white" header="Jukebox moderne" lead="Admin application" >
+        <b-button v-on:click="logout()" variant="outline-danger">Log out</b-button>
+
       </b-jumbotron>
     </div>
     <div>
-        <form @submit.prevent="logout()" class="form-sign">
-            <input class="buttons" type="submit" value="logout !"/>
-        </form>
-        
-        <form @submit.prevent="test()" class="form-sign">
-            <input class="buttons" type="submit" value="test !"/>
-        </form>
+
 
       <b-container class="bv-example-row">
         <b-row>
@@ -69,7 +65,7 @@
         data() {
             return {
                 form: {
-                    administratorJukebox: 'session',
+                    administratorJukebox: ls.get('administratorJukebox'),
                     nameJukebox: '',
                     descriptionJukebox: ''
                 },
@@ -104,11 +100,12 @@
                     name: "history"
                 })
             },
-            
+
             logout() {
                 api.get('admin/logout').then(response => {
                     console.log('deco')
                     ls.remove('token')
+                  ls.remove('administratorJukebox')
                     this.$router.push({
                         name: "signin"
                     })
@@ -116,13 +113,7 @@
                     console.log(error)
                 })
             },
-            test() {
-                api.get('admin/test').then(response => {
-                    console.log(response.data);
-                }).catch(error => {
-                    console.log(error)
-                })
-            }
+
         }
     }
 

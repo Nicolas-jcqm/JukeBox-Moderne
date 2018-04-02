@@ -4,6 +4,7 @@ import signin from '@/components/signin'
 import signup from '@/components/signup'
 import home from '@/components/home'
 import history from '@/components/history'
+import catalog from '@/components/catalog'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
             path:'/history',
             name:'history',
             component: history
+        },
+        {
+          path: '/catalog/:tokenJukebox',
+          name: 'catalog',
+          component: catalog
         }
   ]
 })

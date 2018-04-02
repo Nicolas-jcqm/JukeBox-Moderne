@@ -85,8 +85,8 @@ $app->get('/jukebox/{tokenJukebox}/queue/tracks',function(Slim\Http\Request $req
 $app->post('/jukebox', function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $jc = new JukeboxController();
     return $jc->addJukeBox($req, $res);
+})->add($middleware_co);
 });
-
 //Afficher le catalogue
 $app->get('/trackCatalog', function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $jc = new TrackController();
@@ -97,9 +97,9 @@ $app->get('/trackCatalog', function(Slim\Http\Request $req,  Slim\Http\Response 
 $app->get('/jukebox/{tokenJukebox}/library/tracks', function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $lc = new LibraryController();
     echo $lc->returnLibraryTracks($args['tokenJukebox']);
-});
+})->add($middleware_co);
 //Supprimer musique de la blibliothèque
-$app->get('/jukebox/{tokenJukebox}/lol', function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
+/**$app->get('/jukebox/{tokenJukebox}/lol', function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $lc = new LibraryController();
     echo $lc->deleteTrackLibrary($args['tokenJukebox']);
 });
