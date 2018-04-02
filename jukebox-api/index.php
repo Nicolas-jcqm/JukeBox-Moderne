@@ -87,13 +87,11 @@ $app->get('/jukebox/{tokenJukebox}/queue/tracks',function(Slim\Http\Request $req
 $app->post('/jukebox', function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $jc = new JukeboxController();
     return $jc->addJukeBox($req, $res);
-})->add($middleware_co);
 });
 //Afficher le catalogue
 $app->get('/trackCatalog', function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $jc = new TrackController();
     echo $jc->returnTrackCatalog();
-
 });
 
 //Afficher la bibliothèque d'un jukebox
@@ -140,11 +138,7 @@ $app->post('/admin/signup',function(Slim\Http\Request $req,  Slim\Http\Response 
 
 $app->get('/admin/logout',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $ac = new AdminController();
-    return $ac->disconnect($req, $res);
+    return $ac->disconnect($req, $res,$args);
 });
-
-$app->get('/admin/test',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
-    return 'ok';
-})->add($middleware_co);
 
 $app->run();

@@ -50,11 +50,12 @@ class QueueContentController
                     return json_encode(array('error'=>'user unknown'));
                 }
             } else {
-                return json_encode(array('error'=>'track unknown'));
+            return json_encode(array('error'=>'track unknown'));
             }
         } else{
-            return json_encode(array('error'=>'queue unknown'));
-        }
+         return json_encode(array('error'=>'queue unknown'));
+         }
+
     }
 
 
