@@ -1,31 +1,83 @@
 <template>
 	<div class="back">
-        <div class="login">
-            <h1>Signin</h1>
-            <form @submit.prevent="signup()" class="form-sign">
-                <p class="red" v-if="erreur === true">Veuillez verifier vos information</p>
-                <div>
-                    <label for="name">Nom</label>
-                    <input v-model="user.name" id="email" />
-                </div>
-                <div>
-                    <label for="firstname">Prenom</label>
-                    <input v-model="user.firstname" id="prenom" />
-                </div>
-                <div>
-                    <label for="mail">Mail</label>
-                    <input v-model="user.mail" id="mail" />
-                </div>
-                <div>
-                    <label for="password">Password</label>
-                    <input type="password" v-model="user.password" id="password" />
-                </div>
-                <input class="buttons" type="submit" value="Go !"/>
-            </form>
-            <form @submit.prevent="signin()" class="form-sign">
-                <input class="buttons" type="submit" value="Signin"/>
-            </form>
-        </div>
+        <!--<div class="login">-->
+    <div>
+      <b-jumbotron bg-variant="info" text-variant="white" header="Jukebox moderne" lead="Admin application" >
+      </b-jumbotron>
+    </div>
+            <h1 class="h1">Sign up</h1>
+
+          <b-container>
+                <b-form @submit.prevent="signup()">
+                  <p class="red" v-if="erreur === true">Veuillez verifier vos information</p>
+                  <b-form-group id="InputGroup1"
+                                class="text-center"
+                                label="Name"
+                                label-for="name">
+                    <b-form-input id="name"
+                                  type="text"
+                                  v-model="user.name"
+                                  required
+                                  placeholder="Enter your name .."
+                                  class="text-center">
+                    </b-form-input>
+                  </b-form-group>
+                  <b-form-group id="InputGroup1"
+                                class="text-center"
+                                label="First Name"
+                                label-for="firstname">
+                    <b-form-input id="firstname"
+                                  class="text-center"
+                                  type="text"
+                                  v-model="user.firstname"
+                                  required
+                                  placeholder="Enter your firstname ..">
+                    </b-form-input>
+                  </b-form-group>
+                  <b-form-group id="InputGroup1"
+                                class="text-center"
+                                label="E-mail"
+                                label-for="mail">
+                    <b-form-input id="mail"
+                                  class="text-center"
+                                  type="text"
+                                  v-model="user.mail"
+                                  required
+                                  placeholder="Enter your email ..">
+                    </b-form-input>
+                  </b-form-group>
+                  <b-form-group id="InputGroup1"
+                                class="text-center"
+                                label="Password"
+                                label-for="password">
+                    <b-form-input id="password"
+                                  class="text-center"
+                                  type="text"
+                                  v-model="user.password"
+                                  required
+                                  placeholder="Enter a name ..">
+                    </b-form-input>
+                  </b-form-group>
+
+                  <div class="text-center" style="margin: 1% auto">
+                  <b-button class="center btn-primary btn-lg" type="submit" variant="info">Submit</b-button>
+                  </div>
+                </b-form>
+            <div class="text-center" style="margin: 1% auto">
+                <p>Vous êtes déjà inscrit, vous pouvez desapresent vous connecter.</p>
+                <b-button class="center btn-primary btn-lg" v-on:click="signin()" variant="info">Sign in</b-button>
+            </div>
+
+          </b-container>
+
+
+
+
+          <!--<form @submit.prevent="signin()" class="form-sign">
+            <input class="buttons" type="submit" value="Signin"/>
+          </form>-->
+
+       <!-- </div> -->
 	</div>
 </template>
 
@@ -53,6 +105,7 @@
                     name: this.user.name,
                     firstname: this.user.firstname
                 }
+                ls.remove('token')
                 api.post('/admin/signup', json).then(response => {
                     alert('Vous avez bien éte enregistré, vous allez etre redirigé vers la page de login')
                     this.$router.push({
@@ -75,6 +128,10 @@
 
 
 <style>
+  .h1 {
+    margin-bottom: 4%;
+    margin-left: 2%;
+  }
     .login {
         margin-top: 100px;
         margin-left: auto;
@@ -104,7 +161,7 @@
     .buttons {
         margin-top: 9px;
     }
-    
+
     .red{
         color: indianred;
     }

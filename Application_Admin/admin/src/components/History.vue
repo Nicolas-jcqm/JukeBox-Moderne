@@ -2,6 +2,8 @@
   <div>
     <div>
       <b-jumbotron bg-variant="info" text-variant="white" header="Jukebox moderne" lead="Admin application" >
+        <b-button v-on:click="logout()" variant="outline-danger">Log out</b-button>
+
       </b-jumbotron>
     </div>
     <b-container>
@@ -20,7 +22,7 @@
             <p class="card-text">
               {{j.description}}
             </p>
-            <b-button href="#" variant="info">See playlist</b-button>
+            <b-button v-on:click="goCatalogu(j.tokenJukebox)" variant="info">See playlist</b-button>
           </b-card>
           </b-col>
         </div>
@@ -33,6 +35,8 @@
 
 <script>
   import api from '../api'
+  import ls from 'local-storage'
+
 
   export default {
 
@@ -42,12 +46,35 @@
       }
     },
     created(){
-      api.get('jukeboxs/session').then(response => {
+      api.get('jukeboxs/'+ls.get('administratorJukebox')).then(response => {
         console.log('ok'+JSON.parse(JSON.stringify(response.data)))
         this.jukeboxs= JSON.parse(JSON.stringify(response.data));
       }).catch(error => {
         console.log(error)
       })
+    },
+    methods :{
+      logout() {
+        api.get('admin/logout').then(response => {
+          console.log('deco')
+          ls.remove('token')
+          ls.remove('administratorJukebox')
+
+          this.$router.push({
+            name: "signin"
+          })
+        }).catch(error => {
+          console.log(error)
+        })
+      },
+      goCatalogu(token){
+        this.$router.push({
+          name: "catalog",
+          params: {
+                    tokenJukebox:token
+                  }
+        })
+      }
     }
 
   }
