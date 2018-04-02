@@ -7,6 +7,8 @@ import store from './store'
 import BootstrapVue from 'bootstrap-vue'
 import interceptors from './services/interceptors'
 import draggable from 'vuedraggable'
+import cheerio from 'cheerio'
+
 
 
 import ls from './services/ls'

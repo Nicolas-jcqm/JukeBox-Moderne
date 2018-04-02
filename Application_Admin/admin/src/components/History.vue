@@ -35,6 +35,8 @@
 
 <script>
   import api from '../api'
+  import ls from 'local-storage'
+
 
   export default {
 
@@ -44,7 +46,7 @@
       }
     },
     created(){
-      api.get('jukeboxs/session').then(response => {
+      api.get('jukeboxs/'+ls.get('administratorJukebox')).then(response => {
         console.log('ok'+JSON.parse(JSON.stringify(response.data)))
         this.jukeboxs= JSON.parse(JSON.stringify(response.data));
       }).catch(error => {
@@ -52,6 +54,19 @@
       })
     },
     methods :{
+      logout() {
+        api.get('admin/logout').then(response => {
+          console.log('deco')
+          ls.remove('token')
+          ls.remove('administratorJukebox')
+
+          this.$router.push({
+            name: "signin"
+          })
+        }).catch(error => {
+          console.log(error)
+        })
+      },
       goCatalogu(token){
         this.$router.push({
           name: "catalog",

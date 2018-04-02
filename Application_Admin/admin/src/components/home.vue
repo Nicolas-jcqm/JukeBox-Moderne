@@ -65,7 +65,7 @@
         data() {
             return {
                 form: {
-                    administratorJukebox: 'session',
+                    administratorJukebox: ls.get('administratorJukebox'),
                     nameJukebox: '',
                     descriptionJukebox: ''
                 },
@@ -105,6 +105,7 @@
                 api.get('admin/logout').then(response => {
                     console.log('deco')
                     ls.remove('token')
+                  ls.remove('administratorJukebox')
                     this.$router.push({
                         name: "signin"
                     })
@@ -112,13 +113,7 @@
                     console.log(error)
                 })
             },
-            test() {
-                api.get('admin/test').then(response => {
-                    console.log(response.data);
-                }).catch(error => {
-                    console.log(error)
-                })
-            }
+
         }
     }
 

@@ -8,7 +8,8 @@ const initialState = {
 export default {
   namespaced: true, //permet d'y accéder de façon nommée
   state: {
-    jukebox: {}
+    jukebox: [],
+    playlist: []
   },
   mutations: {
     setJukebox(state, j) {
@@ -16,6 +17,9 @@ export default {
     },
     addJukebox(state,j) {
       state.jukebox.push(j);
+    },
+    addTrackPlaylist(state, t){
+      state.playlist.push(t);
     }
   },
   getters : {
@@ -29,13 +33,11 @@ export default {
           }, jukebox) {
       return api.post('jukebox', jukebox).then(response => {
         console.log(response);
-        ls.set('token', response.data.token)
 
         commit("addJukebox", response.data)
       }).catch(error => {
         console.log(error)
       })
-      console.log('apres')
     },
     getAllJukebox({commit}){
       return api.get('jukeboxs/session').then(response => {
@@ -43,6 +45,15 @@ export default {
       }).catch(error => {
         console.log(error)
       })
+    },
+    addTrackPlaylist({commit}, data) {
+      return api.post('jukebox/queue/track', data).then(response => {
+        console.log(response);
+        commit("addTrackPlaylist", response.data)
+      }).catch(error => {
+        console.log(error)
+      });
+      console.log('apres')
     }
   }
 }
