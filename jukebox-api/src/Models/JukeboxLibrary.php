@@ -14,7 +14,7 @@ class JukeboxLibrary extends Model
 {
 
     protected $table = 'jukeboxlibrary';
-    protected $primaryKey = ['idJukebox','idTrack'];
+    protected $primaryKey = 'idJukeboxLibrary';
     public $timestamps = false;
 
 

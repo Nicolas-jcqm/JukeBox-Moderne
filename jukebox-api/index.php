@@ -109,22 +109,8 @@ $app->get('/jukebox/{tokenJukebox}/library/tracks', function(Slim\Http\Request $
 /**$app->get('/jukebox/{tokenJukebox}/lol', function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $lc = new LibraryController();
     echo $lc->deleteTrackLibrary($args['tokenJukebox']);
-});
-/*
-$app->post('/playlist/tracks',function() use ($app){
-    if(isset($_POST['idPlaylist']) && isset($_POST['idTrack']) ){
-        $pc = new PlaylistController();
-        echo $pc->addTrackIntoPlaylist($_POST['idPlaylist'], $_POST['idTrack']);
-    }else{
-        echo json_encode(array('error'=>'data missing'));
-    }
-})->name('addTracksPlaylist');
+});*/
 
-$app->post('/jukebox/:tokenJukebox/playlist/tracks',function($tokenJukeBox) use ($app){
-    $jc = new JukeboxController();
-    $listTracks = $jc->returnTracks($tokenJukeBox);
-    foreach ($listTracks->tracks as $t) { echo $t; }
-})->name('tracksPlaylist');*/
 
 $app->put('/jukebox/queue/track/vote',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $jc = new QueueContentController();

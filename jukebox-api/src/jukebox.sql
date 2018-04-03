@@ -1,4 +1,4 @@
--- phpMyAdmin SQL Dump
+﻿-- phpMyAdmin SQL Dump
 -- version 4.7.4
 -- https://www.phpmyadmin.net/
 --
@@ -98,35 +98,31 @@ INSERT INTO `jukebox` (`idJukebox`, `nameJukebox`, `description`, `tokenJukebox`
 -- Structure de la table `jukeboxlibrary`
 --
 
+
 DROP TABLE IF EXISTS `jukeboxlibrary`;
 CREATE TABLE IF NOT EXISTS `jukeboxlibrary` (
+  `idJukeboxLibrary` int(11) NOT NULL AUTO_INCREMENT,
   `idJukebox` int(11) NOT NULL,
   `idTrack` int(11) NOT NULL,
-  PRIMARY KEY (`idJukebox`,`idTrack`),
-  KEY `jukeboxlibrary_ctrtJukebox` (`idJukebox`),
-  KEY `jukeboxlibrary_ctrtTrack` (`idTrack`)
+  PRIMARY KEY (``idJukeboxLibrary`),
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `jukeboxlibrary`
 --
 
-INSERT INTO `jukeboxlibrary` (`idJukebox`, `idTrack`) VALUES
-(1, 1),
-(1, 2),
-(1, 3),
-(1, 4),
-(1, 5),
-(1, 6),
-(1, 7),
-(1, 8),
-(1, 9),
-(1, 10),
-(1, 11),
-(1, 12),
-(1, 13),
-(1, 18),
-(1, 19);
+INSERT INTO `jukeboxlibrary` (`idJukeboxLibrary`, `idJukebox`, `idTrack`) VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 1, 3),
+(4, 1, 4),
+(5, 1, 5),
+(6, 1, 6),
+(7, 1, 7),
+(8, 1, 8),
+(9, 1, 9),
+(10, 1, 10),
+(11, 1, 11);
 
 -- --------------------------------------------------------
 

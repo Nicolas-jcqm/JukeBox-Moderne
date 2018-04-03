@@ -28,12 +28,16 @@ class JukeboxLibraryController {
      * TODO https://laravel.com/docs/5.4/eloquent-relationships#updating-many-to-many-relationships attaching
      */
     public function addTrackIntoLibrary($request, $response){
+
         $params = (array)json_decode($request->getBody());
-            if ($this->jc->jukeboxExist($params["idJukebox"])) {
+
+         $jukebox= $this->jc->returnJukebox($params["tokenJukebox"]);
+
+            if ($this->jc->jukeboxExist($jukebox->idJukebox)) {
                 if ( $this->tc->trackExist($params["idTrack"])) {
-                    if($this->trackIsInLibrary($params["idJukebox"],$params["idTrack"])) {
+                    if($this->trackIsInLibrary($jukebox->idJukebox,$params["idTrack"])) {
                         $musicInLibrary = new JukeboxLibrary;
-                        $musicInLibrary->idJukebox = $params["idJukebox"];
+                        $musicInLibrary->idJukebox = $jukebox->idJukebox;
                         $musicInLibrary->idTrack = $params["idTrack"];
                         $musicInLibrary->save();
                     }else return json_encode(array('error'=>'idTrack already in Library'));

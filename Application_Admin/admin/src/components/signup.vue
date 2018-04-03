@@ -51,11 +51,11 @@
                                 label="Password"
                                 label-for="password">
                     <b-form-input id="password"
-                                  class="text-center"
                                   type="password"
+                                  class="text-center"
                                   v-model="user.password"
                                   required
-                                  placeholder="Enter a name ..">
+                                  placeholder="Enter a password ..">
                     </b-form-input>
                   </b-form-group>
 

@@ -12,7 +12,7 @@
       <b-row>
           <b-col>
             <h1>Votre bibliothèque</h1>
-            <draggable v-model="biblio" @add="onAdd" class="dragArea" :options="{group:'jukebox'}">
+            <draggable style="height:30px;" v-model="biblio" @add="onAdd" class="dragArea" :options="{group:'jukebox'}">
               <div v-for="(element,index) in biblio" :key="element.idTrack">
                 <b-card style="max-width: 50%"
                         img-src="https://placekitten.com/1000/300"
