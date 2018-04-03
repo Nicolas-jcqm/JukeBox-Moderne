@@ -78,4 +78,22 @@ class QueueContentController
         } else return json_encode(array('error'=>'queue unknown'));
     }
 
+    public function refreshStatusTrack($request, $response){
+        $params = (array)json_decode($request->getBody());
+        if (isset($params["idJukebox"]) && $this->jc->jukeboxExist($params["idJukebox"])) {
+            if (isset($params['idTrack']) && $this->tc->trackExist($params['idTrack'])) {
+                $queue = $this->qc->returnActiveQueue($params["idJukebox"]);
+                $track = QueueContent::where('idQueue','=', $queue->idQueue)->where('idTrack','=',$params['idTrack'])->first();
+                $track->status = "read";
+                $track->save();
+                return json_encode(array('success'=>$this->returnNotRead($queue)));
+            }
+        }
+    }
+
+    public function returnNotRead($queue){
+        $liste = QueueContent::select('idTrack')->where('idQueue','=',$queue->idQueue)->where('status','like','not read')->orderBy('score','DESC')->orderBy('positionTrack','ASC')->get();
+        return $this->tc->returnJsonTracks2($liste);
+    }
+
 }

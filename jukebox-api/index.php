@@ -67,6 +67,11 @@ $app->get('/jukeboxs/{administratorJukebox}',function (Slim\Http\Request $req,  
     echo $jc->returnJukeboxAdmin($args['administratorJukebox']);
 });
 
+$app->get('/jukebox/token/{id}',function (Slim\Http\Request $req,  Slim\Http\Response $res, $args)  use ($app){
+    $jc = new JukeboxController();
+    echo $jc->returnJukeboxToken($args['id']);
+});
+
 $app->get('/jukebox/{tokenJukebox}',function (Slim\Http\Request $req,  Slim\Http\Response $res, $args)  use ($app){
     $jc = new JukeboxController();
 
@@ -124,6 +129,11 @@ $app->post('/jukebox/:tokenJukebox/playlist/tracks',function($tokenJukeBox) use 
 $app->put('/jukebox/queue/track/vote',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $jc = new QueueContentController();
     return $jc->vote($req, $res);
+});
+
+$app->put('/jukebox/queue/track/status',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
+    $jc = new QueueContentController();
+    return $jc->refreshStatusTrack($req, $res);
 });
 
 $app->post('/admin/signin',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
