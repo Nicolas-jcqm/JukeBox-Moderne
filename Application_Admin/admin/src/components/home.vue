@@ -24,6 +24,15 @@
 
           <b-col>
             <h1  class="h1">Create your jukebox</h1>
+
+            <b-alert :show="dismissCountDown"
+                     dismissible
+                     variant="success"
+                     @dismissed="dismissCountdown=0"
+                     @dismiss-count-down="countDownChanged">
+              Your jukebox are created !
+            </b-alert>
+
             <b-form @submit="onSubmit" @reset="onReset" v-if="show">
               <b-form-group id="InputGroup1"
                             label="Jukebox Name"
@@ -48,6 +57,7 @@
               <b-button type="submit" variant="info">Submit</b-button>
               <b-button type="reset" variant="outline-danger">Reset</b-button>
             </b-form>
+
           </b-col>
         </b-row>
       </b-container>
@@ -69,18 +79,22 @@
                     nameJukebox: '',
                     descriptionJukebox: ''
                 },
-                show: true
+                show: true,
+                dismissSecs: 5,
+                dismissCountDown: 0
             }
         },
         methods: {
             onSubmit(evt) {
                 let data = JSON.stringify(this.form);
                 console.log(data);
+
                 this.$store.dispatch('jukebox/createJukebox', data).then(response => {
                     console.log('cest passe!');
                 })
-
-                evt.preventDefault();
+                this.dismissCountDown = this.dismissSecs;
+                this.form.nameJukebox = '';
+                this.form.descriptionJukebox = '';
 
             },
             onReset(evt) {
@@ -113,7 +127,9 @@
                     console.log(error)
                 })
             },
-
+          countDownChanged (dismissCountDown) {
+            this.dismissCountDown = dismissCountDown
+          }
         }
     }
 
@@ -124,5 +140,8 @@
     .h1 {
         margin-bottom: 4%;
     }
+  .alert{
+    margin: 2% 2%;
+  }
 
 </style>

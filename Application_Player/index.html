@@ -86,23 +86,41 @@
       recursive_play();
     }
 
+  
       $(document).ready(function(){
+
+      
           $.getJSON('http://s07-gestion-appel-offre.zenserv.fr/index.php/jukebox/mynithluna', function(json_data){
               $('h1').text(json_data.nameJukebox);
               //infos pour jukebox
               $('h4').text(json_data.description);
               $('h5').text(json_data.administratorJukebox);
 
+          }); 
+          var tab= new Array();
+            //timer!
+          $.getJSON('http://s07-gestion-appel-offre.zenserv.fr/index.php/jukebox/mynithluna/queue/tracks', function(json_data){
+            for (var i = json_data.length - 1; i >= 0; i--) {
+              //document.getElementById("leftdiv").append(json_data[i].Title);
+              tab.push(json_data[i]);
+              $(".list-group").append('<li class="list-group-item"><div class="row"><div class="col text-left">'+json_data[i].Title+' - '+json_data[i].Artist+'</div><div class="col text-right">'+json_data[i].Duration+'</div></div></li>');
+            }
+             play_sound_queue(tab);
           });
-            var tab= new Array();
+
+          /*setInterval(function(){ 
+            console.log('timeout');
             $.getJSON('http://s07-gestion-appel-offre.zenserv.fr/index.php/jukebox/mynithluna/queue/tracks', function(json_data){
-              for (var i = json_data.length - 1; i >= 0; i--) {
-                //document.getElementById("leftdiv").append(json_data[i].Title);
-                tab.push(json_data[i]);
-                $(".list-group").append('<li class="list-group-item"><div class="row"><div class="col text-left">'+json_data[i].Title+' - '+json_data[i].Artist+'</div><div class="col text-right">'+json_data[i].Duration+'</div></div></li>');
-              }
-              play_sound_queue(tab);
-        });
+            for (var i = json_data.length - 1; i >= 0; i--) {
+              //document.getElementById("leftdiv").append(json_data[i].Title);
+              tab.push(json_data[i]);
+              $(".list-group").append('<li class="list-group-item"><div class="row"><div class="col text-left">'+json_data[i].Title+' - '+json_data[i].Artist+'</div><div class="col text-right">'+json_data[i].Duration+'</div></div></li>');
+            }
+          });
+           // }, 3000);
+              */
+              
+            
       });
     </script>
 

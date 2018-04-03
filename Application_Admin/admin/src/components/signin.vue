@@ -8,7 +8,7 @@
     <h1 class="h1">Signin</h1>
           <b-container>
             <b-form @submit.prevent="signin()">
-              <p class="red" v-if="erreur === true">Veuillez verifier vos information</p>
+              <p class="red" v-if="erreur === true">Check your informations</p>
               <b-form-group id="InputGroup1"
                             class="text-center"
                             label="Email"
@@ -41,7 +41,7 @@
             </b-form>
 
             <div class="text-center" style="margin: 1% auto">
-              <p>Vous n'êtes pas encore inscrit, vous pouvez dès à présent vous connecter.</p>
+              <p>You are not sign up , you can do it here !</p>
               <b-button class="btn-primary btn-lg" v-on:click="signup()" variant="info">Sign up</b-button>
             </div>
 
@@ -93,7 +93,8 @@
                 api.post('/admin/signin', json).then(response => {
                     ls.set('token', response.data.token)
                   ls.set('administratorJukebox', response.data.administratorJukebox)
-                    this.$router.push({
+
+                  this.$router.push({
                         name: "home"
                     })
                 }).catch(error => {

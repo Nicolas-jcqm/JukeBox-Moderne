@@ -8,8 +8,16 @@
             <h1 class="h1">Sign up</h1>
 
           <b-container>
+            <b-alert :show="dismissCountDown"
+                     dismissible
+                     variant="success"
+                     @dismissed="dismissCountdown=0"
+                     @dismiss-count-down="countDownChanged">
+              Your profile are created !
+            </b-alert>
+
                 <b-form @submit.prevent="signup()">
-                  <p class="red" v-if="erreur === true">Veuillez verifier vos information</p>
+                  <p class="red" v-if="erreur === true">Check your informations</p>
                   <b-form-group id="InputGroup1"
                                 class="text-center"
                                 label="Name"
@@ -64,7 +72,7 @@
                   </div>
                 </b-form>
             <div class="text-center" style="margin: 1% auto">
-                <p>Vous êtes déjà inscrit, vous pouvez desapresent vous connecter.</p>
+                <p>If you are already sign up , you can sign in here !</p>
                 <b-button class="center btn-primary btn-lg" v-on:click="signin()" variant="info">Sign in</b-button>
             </div>
 
@@ -94,7 +102,9 @@
                     password: "",
                     name: "",
                     firstname: ""
-                }
+                },
+              dismissSecs: 5,
+              dismissCountDown: 0
             }
         },
         methods: {
@@ -107,7 +117,9 @@
                 }
                 ls.remove('token')
                 api.post('/admin/signup', json).then(response => {
-                    alert('Vous avez bien éte enregistré, vous allez etre redirigé vers la page de login')
+                  this.dismissCountDown = this.dismissSecs;
+
+
                     this.$router.push({
                         name: "signin"
                     })
@@ -120,7 +132,10 @@
                 this.$router.push({
                     name: "signin"
                 })
-            }
+            },
+          countDownChanged (dismissCountDown) {
+            this.dismissCountDown = dismissCountDown
+          }
         }
     }
 
