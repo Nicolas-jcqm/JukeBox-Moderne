@@ -32,7 +32,7 @@ class JukeboxController {
     }
 
     public function returnJukebox($tokenJukeBox){
-        return Jukebox::where('tokenJukebox','like',$tokenJukeBox)->first();
+        return Jukebox::where('tokenJukebox','=',$tokenJukeBox)->first();
     }
 
     public function returnQueues($tokenJukebox){

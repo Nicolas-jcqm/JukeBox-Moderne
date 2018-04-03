@@ -32,7 +32,8 @@ class QueueContentController
      */
     public function addTrackIntoQueue($request, $reponse) {
         $params = (array)json_decode($request->getBody());
-        $queue = $this->qc->returnQueuesFromJukebox($params["idJukebox"]);
+        $jukebox= $this->jc->returnJukebox($params["tokenJukebox"]);
+        $queue = $this->qc->returnQueuesFromJukebox($jukebox->idJukebox);
 
         // D'un jukebox, numero de la queue , numero de la musique, statut de la personnne
         if ($this->qc->queueExist($queue->idQueue)) {

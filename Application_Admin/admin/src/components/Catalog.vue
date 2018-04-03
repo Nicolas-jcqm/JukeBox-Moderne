@@ -12,7 +12,7 @@
       <b-row>
           <b-col>
             <h1>Votre bibliothèque</h1>
-            <draggable v-model="biblio" @add="onAdd" class="dragArea" :options="{group:'jukebox'}">
+            <draggable style="height:30px;" v-model="biblio" @add="onAdd" class="dragArea" :options="{group:'jukebox'}">
               <div v-for="(element,index) in biblio" :key="element.idTrack">
                 <b-card style="max-width: 50%"
                         img-src="https://placekitten.com/1000/300"
@@ -91,7 +91,7 @@
        let admin =ls.get('administratorJukebox');
        let idJukebox = this.$route.params.tokenJukebox;
 
-       let data = {"idJukebox": idJukebox, "idTrack":idTrack, "userTrack":admin};
+       let data = {"tokenJukebox": idJukebox, "idTrack":idTrack};
        console.log(data);
 
         this.$store.dispatch('jukebox/addTrackPlaylist', data).then(response => {

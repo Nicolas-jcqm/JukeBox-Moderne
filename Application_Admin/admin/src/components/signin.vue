@@ -26,8 +26,8 @@
                             label="Password"
                             label-for="password">
                 <b-form-input id="password"
+                              type="password"
                               class="text-center"
-                              type="text"
                               v-model="user.password"
                               required
                               placeholder="Enter your password ..">
@@ -88,6 +88,7 @@
                     password: this.user.password
                 }
                 ls.remove('token')
+              ls.remove('administratorJukebox')
                 api.post('/admin/signin', json).then(response => {
                     ls.set('token', response.data.token)
                   ls.set('administratorJukebox', response.data.administratorJukebox)

@@ -47,7 +47,7 @@ export default {
       })
     },
     addTrackPlaylist({commit}, data) {
-      return api.post('jukebox/queue/track', data).then(response => {
+      return api.post('jukebox/library/track', data).then(response => {
         console.log(response);
         commit("addTrackPlaylist", response.data)
       }).catch(error => {
