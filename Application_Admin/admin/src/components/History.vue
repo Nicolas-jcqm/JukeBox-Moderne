@@ -47,7 +47,7 @@
     },
     created(){
       api.get('jukeboxs/'+ls.get('administratorJukebox')).then(response => {
-        console.log('ok'+JSON.parse(JSON.stringify(response.data)))
+        console.log('ok',JSON.parse(JSON.stringify(response.data)))
         this.jukeboxs= JSON.parse(JSON.stringify(response.data));
       }).catch(error => {
         console.log(error)

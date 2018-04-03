@@ -14,21 +14,29 @@
             <h1>Votre bibliothèque</h1>
             <draggable style="height:30px;" v-model="biblio" @add="onAdd" class="dragArea" :options="{group:'jukebox'}">
               <div v-for="(element,index) in biblio" :key="element.idTrack">
-                <b-card style="max-width: 50%"
-                        img-src="https://placekitten.com/1000/300"
+                <b-card class="text-center"
+                        style="max-width: 50%;margin: 2% auto"
+                        :img-src="element.Picture"
                         img-alt="Card image"
                         img-top>
                   <p class="card-text">
                     {{element.Title}}
                   </p>
                 </b-card>
+
               </div>
             </draggable>
           </b-col>
           <b-col>
             <h1>Notre catalogue</h1>
             <draggable v-model="catalog" @add="onAdd" class="dragArea" :options="{group:'jukebox'}">
-              <div v-for="element in catalog">{{element.Title}}</div>
+              <div v-for="element in catalog">
+                <b-card style="margin: 2%">
+                  <p class="card-text">
+                    {{element.Title}}
+                  </p>
+                </b-card>
+              </div>
             </draggable>
           </b-col>
       </b-row>
@@ -53,6 +61,7 @@
       }
     },
     created(){
+
       //récupération de la blibliothèque de ce jukebox
      let token = this.$route.params.tokenJukebox;
       api.get('jukebox/'+token+'/library/tracks').then(response =>{
