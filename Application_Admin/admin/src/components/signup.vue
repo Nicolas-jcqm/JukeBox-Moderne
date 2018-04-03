@@ -63,7 +63,7 @@
                                   class="text-center"
                                   v-model="user.password"
                                   required
-                                  placeholder="Enter a name ..">
+                                  placeholder="Enter a password ..">
                     </b-form-input>
                   </b-form-group>
 

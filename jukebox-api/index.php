@@ -55,7 +55,7 @@ $middleware_co = function (Slim\Http\Request $request, Slim\Http\Response $respo
            if($_SESSION['token'] == $tokenReq){
             return $next($request, $response);
         }else {
-            return $response->withJson(['Wrong token' => 'can t connect'], 403);
+            return $response->withJson(['Wrong token' => 'can t connect'], 401);
         }
       }else {
           return $response->withJson(['No token' => 'can t connect'], 401);
@@ -65,6 +65,11 @@ $middleware_co = function (Slim\Http\Request $request, Slim\Http\Response $respo
 $app->get('/jukeboxs/{administratorJukebox}',function (Slim\Http\Request $req,  Slim\Http\Response $res, $args)  use ($app){
     $jc = new JukeboxController();
     echo $jc->returnJukeboxAdmin($args['administratorJukebox']);
+});
+
+$app->get('/jukebox/token/{id}',function (Slim\Http\Request $req,  Slim\Http\Response $res, $args)  use ($app){
+    $jc = new JukeboxController();
+    echo $jc->returnJukeboxToken($args['id']);
 });
 
 $app->get('/jukebox/{tokenJukebox}',function (Slim\Http\Request $req,  Slim\Http\Response $res, $args)  use ($app){
@@ -87,12 +92,12 @@ $app->get('/jukebox/{tokenJukebox}/queue/tracks',function(Slim\Http\Request $req
 $app->post('/jukebox', function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $jc = new JukeboxController();
     return $jc->addJukeBox($req, $res);
-});
+})->add($middleware_co);
 //Afficher le catalogue
 $app->get('/trackCatalog', function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $jc = new TrackController();
     echo $jc->returnTrackCatalog();
-});
+})->add($middleware_co);
 
 //Afficher la bibliothèque d'un jukebox
 $app->get('/jukebox/{tokenJukebox}/library/tracks', function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
@@ -110,6 +115,11 @@ $app->get('/jukebox/{tokenJukebox}/library/tracks', function(Slim\Http\Request $
 $app->put('/jukebox/queue/track/vote',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
     $jc = new QueueContentController();
     return $jc->vote($req, $res);
+});
+
+$app->put('/jukebox/queue/track/status',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){
+    $jc = new QueueContentController();
+    return $jc->refreshStatusTrack($req, $res);
 });
 
 $app->post('/admin/signin',function(Slim\Http\Request $req,  Slim\Http\Response $res, $args) use ($app){

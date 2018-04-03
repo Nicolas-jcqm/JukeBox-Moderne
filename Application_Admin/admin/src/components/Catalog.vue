@@ -11,7 +11,7 @@
       <b-alert class="text-center" show variant="info">IMPORTANT : Ajouter votre musique à la fin de la liste</b-alert>
       <b-row>
           <b-col>
-            <h1>Votre bibliothèque</h1>
+            <h1>Youre librairie</h1>
             <draggable style="height:30px;" v-model="biblio" @add="onAdd" class="dragArea" :options="{group:'jukebox'}">
               <div v-for="(element,index) in biblio" :key="element.idTrack">
                 <b-card class="text-center"
@@ -28,9 +28,12 @@
             </draggable>
           </b-col>
           <b-col>
-            <h1>Notre catalogue</h1>
+            <h1>Our catalog</h1>
+            <div class='test'>
+              Barre de recherche :  <input type="text" v-model="search"/>
+            </div>
             <draggable v-model="catalog" @add="onAdd" class="dragArea" :options="{group:'jukebox'}">
-              <div v-for="element in catalog">
+              <div v-for="element in filteredCatalog">
                 <b-card style="margin: 2%">
                   <p class="card-text">
                     {{element.Title}}
@@ -56,9 +59,32 @@
     },
     data () {
       return {
+        search: '',
         biblio: [],
         catalog: []
       }
+    },
+    computed: {
+
+      filteredCatalog: function() {
+        var self = this
+        let result = []
+        if (self.search === "") {
+          result = this.catalog
+        } else {
+          this.catalog.forEach(function(element) {
+            console.log(element.Title)
+
+            if (element.Title.toLowerCase().startsWith(self.search.toLowerCase()) ) {
+              result.push(element)
+            }
+          })
+
+        }
+
+        return result
+      }
+
     },
     created(){
 
@@ -80,7 +106,7 @@
 
     },
 
-    methods :{
+    methods : {
       logout() {
         api.get('admin/logout').then(response => {
           console.log('deco')
@@ -96,31 +122,32 @@
       },
       onAdd(evt) {
 
-       let idTrack =this.biblio[(this.biblio.length)-1].idTrack;
-       let admin =ls.get('administratorJukebox');
-       let idJukebox = this.$route.params.tokenJukebox;
+        let idTrack = this.biblio[(this.biblio.length) - 1].idTrack;
+        let admin = ls.get('administratorJukebox');
+        let idJukebox = this.$route.params.tokenJukebox;
 
-       let data = {"tokenJukebox": idJukebox, "idTrack":idTrack};
-       console.log(data);
+        let data = {"tokenJukebox": idJukebox, "idTrack": idTrack};
+        console.log(data);
 
         this.$store.dispatch('jukebox/addTrackPlaylist', data).then(response => {
           console.log('cest passe!');
         })
 
 
-
-      },
-
+      }
     }
-  }
+    }
 
 </script>
 
 
 <style>
-  .h1{
-    margin-bottom: 4%;
-  }
+    .h1 {
+        margin-bottom: 4%;
+    }
+    .test{
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
 </style>
-
-

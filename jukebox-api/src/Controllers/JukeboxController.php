@@ -10,6 +10,8 @@
 namespace Controllers;
 
 use Models\Jukebox;
+use Models\JukeboxLibrary;
+
 class JukeboxController {
 
     private $pc;
@@ -134,6 +136,13 @@ class JukeboxController {
         $exists = Jukebox::where('idJukebox','=',$id)->get()->count();
         if($exists == 1) return true;
             else return false;
+    }
+
+    public function returnJukeboxToken($id){
+        if(Jukebox::find($id)->exists)
+            return Jukebox::select('tokenJukebox')->where('idJukebox','=',$id)->first();
+        else
+            return json_encode(array('error'=>'idJukebox unknown'));
     }
 
 }
