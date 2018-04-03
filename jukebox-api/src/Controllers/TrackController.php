@@ -30,6 +30,15 @@ class TrackController
         return json_encode($res);
     }
 
+    public function returnJsonTracks2($listidTracks){
+        $res=array();
+        foreach ($listidTracks as $tr) {
+            $t = Track::where('idTrack','=',$tr->idTrack)->first();
+           array_push($res, array("idTrack"=>$t->idTrack,"Title"=>$t->titleTrack, "Duration"=>$t->durationTrack, "Description"=>$t->descriptionTrack, "Score"=>$t->scoreTrack, "Year"=>$t->yearTrack, "Picture"=>$t->pictureTrack, "Url"=>$t->urlTrack, "Artist"=>$this->ac->returnNameArtist($t->idArtist), "Kind"=>$this->kc->returnNameKind($t->idKind) ));
+        }
+        return json_encode($res);
+    }
+
     //retourne le catalogue en Json
 	public function returnTrackCatalog(){
         $listTracks = Track::all();

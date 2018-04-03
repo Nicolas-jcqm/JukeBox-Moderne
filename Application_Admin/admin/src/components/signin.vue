@@ -28,6 +28,7 @@
                 <b-form-input id="password"
                               type="password"
                               class="text-center"
+
                               v-model="user.password"
                               required
                               placeholder="Enter your password ..">
