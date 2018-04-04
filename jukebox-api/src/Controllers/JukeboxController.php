@@ -65,14 +65,14 @@ class JukeboxController {
     public function returnTracks($tokenJukeBox){
         $idJuk = $this->returnJukebox($tokenJukeBox);
         if($idJuk == null) return json_encode(array('error'=>'Token Jukebox unknown'));
-        echo ($this->pc->returnActiveQueue($idJuk->idJukebox));
+        //echo ($this->pc->returnActiveQueue($idJuk->idJukebox));
         return $this->returnJsonTracks($this->pc->returnActiveQueue($idJuk->idJukebox));
     }
 
     public function returnJsonTracks($listTracks){
         $res=array();
         foreach ($listTracks->tracks as $t) {
-            array_push($res, array("Title"=>$t->titleTrack, "Duration"=>$t->durationTrack, "Description"=>$t->descriptionTrack, "Score"=>$t->scoreTrack, "Year"=>$t->yearTrack, "Picture"=>$t->pictureTrack, "Url"=>$t->urlTrack, "Artist"=>$this->ac->returnNameArtist($t->idArtist), "Kind"=>$this->ak->returnNameKind($t->idKind) ));
+            array_push($res, array("Id"=>$t->idTrack,"Title"=>$t->titleTrack, "Duration"=>$t->durationTrack, "Description"=>$t->descriptionTrack, "Score"=>$t->scoreTrack, "Year"=>$t->yearTrack, "Picture"=>$t->pictureTrack, "Url"=>$t->urlTrack, "Artist"=>$this->ac->returnNameArtist($t->idArtist), "Kind"=>$this->ak->returnNameKind($t->idKind) ));
         }
         return json_encode($res);
     }
