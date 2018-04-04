@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Nicolas
@@ -10,8 +11,7 @@ namespace Controllers;
 
 use Models\Kind;
 
-class KindController
-{
+class KindController {
 
     public function returnNameKind($idKind){
         $res = Kind::select('nameKind')->where('idKind','like',$idKind)->first();

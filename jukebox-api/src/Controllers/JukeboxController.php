@@ -29,24 +29,44 @@ class JukeboxController {
         return Jukebox::all();
     }
 
+    /**
+     * Retourne le jukebox d'un administrateur donné
+     * @param $administratorJukebox
+     * @return mixed
+     */
     public function returnJukeboxAdmin($administratorJukebox){
-         return Jukebox::where('administratorJukebox','=',$administratorJukebox)->get();
+         $admin = Jukebox::where('administratorJukebox','=',$administratorJukebox)->get();
+         if($admin == null) return json_encode(array('error'=>'No jukebox'));
+         else return $admin;
     }
 
+    /**
+     * Retourne le jukebox lié au token donné en paramètre
+     * @param $tokenJukeBox
+     * @return mixed
+     */
     public function returnJukebox($tokenJukeBox){
         return Jukebox::where('tokenJukebox','=',$tokenJukeBox)->first();
     }
 
+    /**
+     * Retourne la queue active à lire d'un jukebox à partir de son token
+     * @param $tokenJukebox
+     * @return mixed
+     */
     public function returnQueues($tokenJukebox){
         $idJuk = $this->returnJukebox($tokenJukebox);
-        return $this->pc->returnQueuesFromJukebox($idJuk->idJukebox);
+        if($idJuk == null) return json_encode(array('error'=>'tokenJukebox unknown'));
+        $queue = $this->pc->returnActiveQueue($idJuk->idJukebox);
+        if($queue == null) return json_encode(array('error'=>'no queue'));
+        else return $queue;
     }
 
     public function returnTracks($tokenJukeBox){
         $idJuk = $this->returnJukebox($tokenJukeBox);
+        if($idJuk == null) return json_encode(array('error'=>'Token Jukebox unknown'));
         echo ($this->pc->returnActiveQueue($idJuk->idJukebox));
         return $this->returnJsonTracks($this->pc->returnActiveQueue($idJuk->idJukebox));
-
     }
 
     public function returnJsonTracks($listTracks){
@@ -132,17 +152,60 @@ class JukeboxController {
         }
     }
 
+    /**
+     * Retourne un boolean indiquant si un jukebox existe bien, à partir de son Id
+     * @param $id
+     * @return bool
+     */
     public function jukeboxExist($id){
         $exists = Jukebox::where('idJukebox','=',$id)->get()->count();
         if($exists == 1) return true;
             else return false;
     }
 
+    /**
+     * Retourne un boolean indiquant si un jukebox existe bien, à partir de son token
+     * @param $token
+     * @return bool
+     */
+    public function jukeboxExistWithToken($token){
+        $exists = Jukebox::where('tokenJukebox','=',$token)->get()->count();
+        if($exists == 1) return true;
+        else return false;
+    }
+
+    /**
+     * Retourne le token d'un jukebox à partir de son Id
+     * @param $id
+     * @return string
+     */
     public function returnJukeboxToken($id){
-        if(Jukebox::find($id)->exists)
+        if($this->jukeboxExist($id))
             return Jukebox::select('tokenJukebox')->where('idJukebox','=',$id)->first();
-        else
-            return json_encode(array('error'=>'idJukebox unknown'));
+        else return json_encode(array('error'=>'idJukebox unknown'));
+    }
+
+    /**
+     * Retourne l'id d'un jukebox à partir de son token
+     * @param $id
+     * @return string
+     */
+    public function returnJukeboxId($token){
+        if($this->jukeboxExistWithToken($token))
+            return Jukebox::select('idJukebox')->where('tokenJukebox','=',$token)->first();
+        else return json_encode(array('error'=>'token unknown'));
+    }
+
+    /**
+     * Test
+     */
+    public function testToken(){
+        // create a storage object to hold refresh tokens
+        $storage = new OAuth2\Storage\Pdo(array('dsn' => 'sqlite:refreshtokens.sqlite'));
+        // create the grant type
+        $grantType = new OAuth2\GrantType\RefreshToken($storage);
+        // add the grant type to your OAuth server
+        $server->addGrantType($grantType);
     }
 
 }

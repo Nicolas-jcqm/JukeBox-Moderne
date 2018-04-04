@@ -45,6 +45,11 @@ class TrackController
 	    return  $this->returnJsonTracks($listTracks);
 	 }
 
+    /**
+     * Retourne un boolean indiquant si l'id de la musique en paramètre existe bien
+     * @param $idTrack
+     * @return bool
+     */
     public function trackExist($idTrack){
         return Track::where('idTrack','=',$idTrack)->get()->count() == 1;
     }

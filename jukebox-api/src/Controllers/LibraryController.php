@@ -56,7 +56,7 @@ class LibraryController
 		}
 		return  $this->returnJsonTracks($library);
     }
-/**
+    /**
     public function deleteTrackLibrary($tokenJukeBox){
     	$library = $this->returnLibraryTracks($tokenJukeBox);
     	$json = json_decode($library);
@@ -67,7 +67,6 @@ class LibraryController
     		
     	}
 
-    }
-    */
+    }  */
 
 }

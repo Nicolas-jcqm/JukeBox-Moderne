@@ -17,5 +17,4 @@ class QueueContent extends Model{
     protected $primaryKey = 'idQueueContent';
     public $timestamps = false;
 
-
 }

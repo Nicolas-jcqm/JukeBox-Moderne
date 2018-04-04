@@ -11,14 +11,13 @@ namespace Models;
 
 use \Illuminate\Database\Eloquent\Model;
 
-
 class Kind extends Model{
 
     protected $table = 'kind';
     protected $primaryKey = 'idKind';
     public $timestamps = false;
 
-    public function jukeboxLibraries(){
+    public function queues(){
         return $this->hasMany("Models\Queue",'idKind');
     }
 

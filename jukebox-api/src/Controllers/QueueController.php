@@ -27,13 +27,12 @@ class QueueController
     }
 
     /**
-     * TODO
-     * Gerer le cas où aucune playlist n'est active
+     * Retourne la playlist à lire d'un jukebox donné
+     * @param $idJuk
+     * @return mixed
      */
-    public function returnActiveQueue($idJuk)
-    {
-        $activePl = Queue::where('idJukebox', '=', $idJuk)->where('isActivated', '=', '1')->first();
-        return $activePl;
+    public function returnActiveQueue($idJuk) {
+        return Queue::where('idJukebox', '=', $idJuk)->where('isActivated', '=', '1')->first();
     }
 
     public function queueExist($idQueue)
