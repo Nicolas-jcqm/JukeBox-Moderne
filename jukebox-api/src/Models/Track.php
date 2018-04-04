@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Nicolas
@@ -9,7 +10,6 @@
 namespace Models;
 
 use \Illuminate\Database\Eloquent\Model;
-
 
 class Track extends Model {
 

@@ -11,7 +11,6 @@ namespace Models;
 
 use \Illuminate\Database\Eloquent\Model;
 
-
 class Queue extends Model{
 
     protected $table = 'queue';
@@ -19,7 +18,7 @@ class Queue extends Model{
     public $timestamps = false;
 
     public function tracks(){
-        return $this->belongsToMany('\Models\Track', 'queuecontent', 'idQueue', 'idTrack')->orderBy('positionTrack');
+        return $this->belongsToMany('\Models\Track', 'queuecontent', 'idQueue', 'idTrack');
     }
 
     public function jukebox(){

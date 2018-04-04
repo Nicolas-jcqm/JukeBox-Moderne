@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: Nicolas
@@ -10,13 +11,10 @@ namespace Models;
 
 use \Illuminate\Database\Eloquent\Model;
 
-class JukeboxLibrary extends Model
-{
+class JukeboxLibrary extends Model {
 
     protected $table = 'jukeboxlibrary';
     protected $primaryKey = 'idJukeboxLibrary';
     public $timestamps = false;
-
-
 
 }
