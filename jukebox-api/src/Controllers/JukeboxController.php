@@ -11,6 +11,7 @@ namespace Controllers;
 
 use Models\Jukebox;
 use Models\JukeboxLibrary;
+use Models\QueueContent;
 
 class JukeboxController {
 
@@ -72,10 +73,15 @@ class JukeboxController {
     public function returnJsonTracks($listTracks){
         $res=array();
         foreach ($listTracks->tracks as $t) {
-            array_push($res, array("Id"=>$t->idTrack,"Title"=>$t->titleTrack, "Duration"=>$t->durationTrack, "Description"=>$t->descriptionTrack, "Score"=>$t->scoreTrack, "Year"=>$t->yearTrack, "Picture"=>$t->pictureTrack, "Url"=>$t->urlTrack, "Artist"=>$this->ac->returnNameArtist($t->idArtist), "Kind"=>$this->ak->returnNameKind($t->idKind) ));
+            array_push($res, array("Id"=>$t->idTrack,"Title"=>$t->titleTrack, "Duration"=>$t->durationTrack, "Description"=>$t->descriptionTrack, "Score"=>$this->returnScore($listTracks->idQueue, $t->idTrack), "Year"=>$t->yearTrack, "Picture"=>$t->pictureTrack, "Url"=>$t->urlTrack, "Artist"=>$this->ac->returnNameArtist($t->idArtist), "Kind"=>$this->ak->returnNameKind($t->idKind) ));
         }
         return json_encode($res);
     }
+
+    public function returnScore($idQueue, $idTrack){
+        return QueueContent::select('score')->where('idQueue','=',$idQueue)->where('idTrack','=',$idTrack)->first()->score;
+    }
+
 
     //creation d'un jukebox
     public function addJukeBox($request, $response){
