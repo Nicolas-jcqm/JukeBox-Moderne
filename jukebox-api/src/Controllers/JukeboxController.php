@@ -18,12 +18,14 @@ class JukeboxController {
     private $pc;
     private $ac;
     private $ak;
+    private $tc;
 
 
     public function __construct(){
         $this->pc =  new QueueController();
         $this->ac = new ArtistController();
         $this->ak = new KindController();
+        $this->tc = new TrackController();
     }
     
     public function returnAll(){
@@ -63,6 +65,14 @@ class JukeboxController {
         else return $queue;
     }
 
+
+    /**
+     * TODO
+     * public function returnNotRead($queue){
+    $liste = QueueContent::select('idTrack')->where('idQueue','=',$queue->idQueue)->orderBy('status','ASC')->orderBy('score','DESC')->orderBy('positionTrack','ASC')->get();
+    return $this->tc->returnJsonTracks2($liste);
+    }
+     */
     public function returnTracks($tokenJukeBox){
         $idJuk = $this->returnJukebox($tokenJukeBox);
         if($idJuk == null) return json_encode(array('error'=>'Token Jukebox unknown'));
@@ -71,11 +81,15 @@ class JukeboxController {
     }
 
     public function returnJsonTracks($listTracks){
+
+        $liste = QueueContent::select('idTrack')->where('idQueue','=',$listTracks->idQueue)->orderBy('status','ASC')->orderBy('score','DESC')->orderBy('positionTrack','ASC')->get();
+        return $this->tc->returnJsonTracks2($liste, $listTracks->idQueue);
+        /**
         $res=array();
         foreach ($listTracks->tracks as $t) {
             array_push($res, array("Id"=>$t->idTrack,"Title"=>$t->titleTrack, "Duration"=>$t->durationTrack, "Description"=>$t->descriptionTrack, "Score"=>$this->returnScore($listTracks->idQueue, $t->idTrack), "Year"=>$t->yearTrack, "Picture"=>$t->pictureTrack, "Url"=>$t->urlTrack, "Artist"=>$this->ac->returnNameArtist($t->idArtist), "Kind"=>$this->ak->returnNameKind($t->idKind) ));
         }
-        return json_encode($res);
+        return json_encode($res);*/
     }
 
     public function returnScore($idQueue, $idTrack){

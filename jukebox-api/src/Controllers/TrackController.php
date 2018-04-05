@@ -8,8 +8,8 @@
 
 namespace Controllers;
 
+use Models\QueueContent;
 use Models\Track;
-
 
 class TrackController
 {
@@ -30,13 +30,17 @@ class TrackController
         return json_encode($res);
     }
 
-    public function returnJsonTracks2($listidTracks){
+    public function returnJsonTracks2($listidTracks, $idQueue){
         $res=array();
         foreach ($listidTracks as $tr) {
             $t = Track::where('idTrack','=',$tr->idTrack)->first();
-           array_push($res, array("idTrack"=>$t->idTrack,"Title"=>$t->titleTrack, "Duration"=>$t->durationTrack, "Description"=>$t->descriptionTrack, "Score"=>$t->scoreTrack, "Year"=>$t->yearTrack, "Picture"=>$t->pictureTrack, "Url"=>$t->urlTrack, "Artist"=>$this->ac->returnNameArtist($t->idArtist), "Kind"=>$this->kc->returnNameKind($t->idKind) ));
+           array_push($res, array("idTrack"=>$t->idTrack,"Title"=>$t->titleTrack, "Duration"=>$t->durationTrack, "Description"=>$t->descriptionTrack, "Score"=>$this->returnScore($idQueue, $t->idTrack), "Year"=>$t->yearTrack, "Picture"=>$t->pictureTrack, "Url"=>$t->urlTrack, "Artist"=>$this->ac->returnNameArtist($t->idArtist), "Kind"=>$this->kc->returnNameKind($t->idKind) ));
         }
         return json_encode($res);
+    }
+
+    public function returnScore($idQueue, $idTrack){
+        return QueueContent::select('score')->where('idQueue','=',$idQueue)->where('idTrack','=',$idTrack)->first()->score;
     }
 
     //retourne le catalogue en Json
@@ -54,6 +58,6 @@ class TrackController
         return Track::where('idTrack','=',$idTrack)->get()->count() == 1;
     }
 
-   
+
 
 }
