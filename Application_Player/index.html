@@ -5,30 +5,37 @@
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="style.css">
     <title>JukeBox Moderne</title>
-    <script type="text/javascript" src="jquery.min.js"></script>
-    <script type="text/javascript" src="qrcode.js"></script>
+
   </head>
 
   <body>
-
+<!-- Jumbotron display the information about the jukebox-->
     <div class="jumbotron">
       <div class="bloc">
-      <h1>JukeBox</h1>
-      <div id="qrcode" style="width:10px; height:10px; margin-left:80%; margin-bottom: 5%;">
-      </div>
-    <div class="inf" style="margin-left: 5%">
-    <h4>description</h4>
-    <h5>Administrateur</h5>
-  </div>
-</div>
-    </div>
-
-    <div class="container">
-      <div class="row">
-        <div id="left" class="col" style="min-height: 60%">
-          <h2>Prochaine musique :</h2>
-          <ul class="list-group"></ul>
+        <h1>JukeBox</h1>
+      <div id="qrcode" style="width:10px; height:10px; margin-left:80%; margin-bottom: 5%;"></div>
+        <div class="inf" style="margin-left: 5%">
+            <h4>description</h4>
+            <h5>Administrateur</h5>
         </div>
+      </div>
+    </div>
+<!-- -->
+    <div class="container">
+
+      <div class="row">
+          <!-- Left part, display information about next music -->
+        <div id="left" class="col" style="min-height: 60%">
+            <form id="frm1" action="/action_page.php">
+                <label for="valueToken">Code jukebox :</label>
+                <input type="text" class="form-control" name="tokenJukebox" id="valueToken" placeholder="Enter your code..">
+                <input style="margin-top: 2%" type="submit" class="btn btn-info" value="Recharger">
+            </form>
+
+            <h2>Prochaine musique :</h2>
+            <ul class="list-group"></ul>
+        </div>
+          <!-- Right part, display information about current music-->
         <div id="right" class="col divPlayer">
           <div class="titlePlayer">
             <div class="divImg">
@@ -40,11 +47,16 @@
         </div>
       </div>
     </div>
+
+    <!-- -->
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="qrcode.js"></script>
     <script>
       // You can also require other files to run in this process
       require('./renderer.js');
     </script>
 
+    <!-- player audio -->
     <script type="text/javascript">
     function play(audio, callback) {
       $("#imgPlayer").attr("src",audio.Picture);
@@ -62,7 +74,6 @@
         document.getElementById("player2").addEventListener('ended', callback);
       }
     }
-
     //Changed the name to better reflect the functionality
     function play_sound_queue(sounds) {
       var index = 0;
@@ -81,73 +92,52 @@
           });
         }
       }
-
       //Call the recursive_play for the first time
       recursive_play();
     }
-
-  
+    <!-- when the document is ready -->
       $(document).ready(function(){
+        var tokenJukebox
+          //After put the code into the input
+         $("#frm1").submit(function(e){
+          e.preventDefault();
+          tokenJukebox = $("#valueToken").val();
+          console.log(tokenJukebox);
 
-      
-          $.getJSON('http://s07-gestion-appel-offre.zenserv.fr/index.php/jukebox/mynithluna', function(json_data){
+          $.getJSON('http://s07-gestion-appel-offre.zenserv.fr/index.php/jukebox/'+tokenJukebox, function(json_data){
               $('h1').text(json_data.nameJukebox);
               //infos pour jukebox
               $('h4').text(json_data.description);
               $('h5').text(json_data.administratorJukebox);
-
-          }); 
+          });
           var tab= new Array();
-            //timer!
-          $.getJSON('http://s07-gestion-appel-offre.zenserv.fr/index.php/jukebox/mynithluna/queue/tracks', function(json_data){
+          $.getJSON("http://s07-gestion-appel-offre.zenserv.fr/index.php/jukebox/"+tokenJukebox+"/queue/tracks", function(json_data){
             for (var i = json_data.length - 1; i >= 0; i--) {
               //document.getElementById("leftdiv").append(json_data[i].Title);
               tab.push(json_data[i]);
               $(".list-group").append('<li class="list-group-item"><div class="row"><div class="col text-left">'+json_data[i].Title+' - '+json_data[i].Artist+'</div><div class="col text-right">'+json_data[i].Duration+'</div></div></li>');
             }
-             play_sound_queue(tab);
+            play_sound_queue(tab);
           });
 
-          /*setInterval(function(){ 
-            console.log('timeout');
-            $.getJSON('http://s07-gestion-appel-offre.zenserv.fr/index.php/jukebox/mynithluna/queue/tracks', function(json_data){
-            for (var i = json_data.length - 1; i >= 0; i--) {
-              //document.getElementById("leftdiv").append(json_data[i].Title);
-              tab.push(json_data[i]);
-              $(".list-group").append('<li class="list-group-item"><div class="row"><div class="col text-left">'+json_data[i].Title+' - '+json_data[i].Artist+'</div><div class="col text-right">'+json_data[i].Duration+'</div></div></li>');
-            }
+          var qrcode = new QRCode(document.getElementById("qrcode"), {
+            width : 150,
+            height : 150,
+           // useSVG: true
           });
-           // }, 3000);
-              */
-              
-            
+          function makeCode () {
+             var elText ='http://s07-gestion-appel-offre.zenserv.fr/index.php/jukebox/'+tokenJukebox;
+            qrcode.makeCode(elText);
+          }
+          makeCode();
+         });
+        
+          
       });
+
+    
     </script>
 
-<!-- <div > <h2>QRCode et infos du JukeBox: </h2></div>
-<div id="qrcode" style="width:150px; height:150px; margin-left:10%; margin-bottom: 2%"></div>
- </div>
- <br>
- <div class="container" style="margin-left: 10%;"">
-    <h3>JukeBox</h3>
-    <h4>description</h4>
-    <h5>Administrateur</h5>
-</div>
--->
-<script type="text/javascript">
-var qrcode = new QRCode(document.getElementById("qrcode"), {
-  width : 150,
-  height : 150,
- // useSVG: true
-});
 
-function makeCode () {
-   var elText ='http://s07-gestion-appel-offre.zenserv.fr/index.php/jukebox/mynithluna';
-  qrcode.makeCode(elText);
-}
-
-makeCode();
-
-</script>
   </body>
 </html>

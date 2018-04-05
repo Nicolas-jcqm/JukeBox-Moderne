@@ -7,9 +7,17 @@
       </b-jumbotron>
     </div>
     <b-container>
+      <b-row>
+        <h1>Youre jukeboxs</h1>
+
+        <b-button class="btnCode" v-on:click="showCode()" variant="outline-info">
+          Voir les codes
+        </b-button>
+      </b-row>
+
     <b-row class="containerRow">
       <div v-for="j in jukeboxs">
-        <p v-if="j.nameJukebox == undefined">Sorry, there is no friends here !</p>
+        <p v-if="j.nameJukebox == undefined">Sorry, there is no jukebox here !</p>
         <div v-else>
           <b-col>
           <b-card :title="j.nameJukebox"
@@ -23,10 +31,19 @@
               {{j.description}}
             </p>
             <b-button v-on:click="goCatalogu(j.tokenJukebox)" variant="info">See playlist</b-button>
+            <b-alert
+                    :show="show"
+                     dismissible
+                     variant="success"
+                     class="text-center alertCode">
+              {{j.tokenJukebox}}
+            </b-alert>
           </b-card>
           </b-col>
         </div>
+
       </div>
+
     </b-row>
       </b-container>
 
@@ -42,7 +59,8 @@
 
     data () {
       return{
-        jukeboxs:[]
+        jukeboxs:[],
+        show: false
       }
     },
     created(){
@@ -74,6 +92,9 @@
                     tokenJukebox:token
                   }
         })
+      },
+      showCode(){
+        this.show=!this.show;
       }
     }
 
@@ -84,9 +105,19 @@
 
 <style>
   .h1{
+    margin: 4% 4%;
+  }
+  .btnCode{
     margin-bottom: 4%;
+    margin-left: 2%;
+  }
+  .alertCode{
+    margin-top: 2%;
+    margin-bottom: 4%;
+    margin-left: 2%;
   }
 .containerRow{
   margin-left:3%;
 }
+
 </style>
